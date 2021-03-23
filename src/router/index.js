@@ -9,6 +9,14 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/inscription',
+    component: () => import('../views/Inscription.vue')
+  },
+  {
+    path: '/events',
+    component: () => import('../views/Events.vue')
   }
 ]
 

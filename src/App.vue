@@ -1,20 +1,19 @@
 <template>
   <div id="app">
-    <Sidebar/>
     <router-view/>
   </div>
 </template>
 
-<script>
-import Sidebar from '@/components/Sidebar.vue';
-export default {
-  components: {
-    Sidebar
-  },
-  name: 'Home',
+// <script>
+// import Sidebar from '@/components/Sidebar.vue';
+// export default {
+//   components: {
+//     Sidebar
+//   },
+//   name: 'Home',
   
-}
-</script>
+// }
+// </script>
 
 
 <style>
@@ -27,7 +26,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: Roboto, Geneva, Tahoma, sans-serif;
-  background-color: #C8C8C8;
+  background-color: #C8C8C8; height: 100vh;
 }
 
 </style>
