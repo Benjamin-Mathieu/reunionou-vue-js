@@ -11,8 +11,12 @@ const routes = [
     component: Home
   },
   {
-    path: '/profil',
-    component: () => import('../views/Profil.vue')
+    path: '/inscription',
+    component: () => import('../views/Inscription.vue')
+  },
+  {
+    path: '/events',
+    component: () => import('../views/Events.vue')
   }
 ]
 
