@@ -17,6 +17,14 @@ const routes = [
   {
     path: '/events',
     component: () => import('../views/Events.vue')
+  },
+  {
+    path: '/profil',
+    component: () => import('../views/Profil.vue')
+  },
+  {
+    path: '/nouveauMdp',
+    component: () => import('../views/NouveauMdp.vue')
   }
 ]
 
