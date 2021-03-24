@@ -6,7 +6,7 @@
                     <div class="field">
                         <label class="label">Nom</label>
                         <div class="control">
-                        <input class="input" type="text" placeholder="Text input">
+                        <input v-model="name" class="input" type="text">
                         </div>
                     </div>
                 </div>
@@ -14,9 +14,8 @@
                     <div class="field">
                         <label class="label">Prénom</label>
                         <div class="control">
-                            <input class="input" type="text" placeholder="Text input">
+                            <input v-model="firstname" class="input" type="text">
                         </div>
-                        <!-- <p class="help is-success">This username is available</p> -->
                     </div>
                 </div>
             </div>
@@ -24,7 +23,7 @@
             <div class="field">
                 <label class="label">E-mail</label>
                 <div class="control has-icons-left has-icons-right">
-                    <input class="input" type="email" placeholder="Email input">
+                    <input v-model="mail" class="input" type="email" placeholder="Email input">
                     <span class="icon is-small is-left">
                         <i class="fas fa-envelope"></i>
                     </span>
@@ -32,7 +31,6 @@
                         <i class="fas fa-exclamation-triangle"></i>
                     </span>
                 </div>
-                <!-- <p class="help is-danger">This email is invalid</p> -->
             </div>
 
             <div class="columns">
@@ -40,18 +38,19 @@
                     <div class="field">
                         <label class="label">Mot de passe</label>
                         <p class="control has-icons-left">
-                            <input class="input" type="password">
+                            <input v-model="password" class="input" type="password" ref="password1">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-lock"></i>
                             </span>
                         </p>
                         <p class="control has-icons-left"></p>
                     </div>
+                        <p class="help is-danger">Password invalid</p>
                 </div>
                 <div class="column">
                     <div class="field">
                         <label class="label">Confirmer le mot de passe</label>
-                        <input class="input" type="password">
+                        <input v-model="confirm_password" class="input" type="password" ref="password2">
                         <span class="icon is-small is-left">
                             <i class="fas fa-lock"></i>
                         </span>           
@@ -67,9 +66,41 @@
 
 <script>
 export default {
+    data() {
+        return {
+            name: '',
+            firstname: '',
+            mail: '',
+            password: '',
+            confirm_password: ''
+        }
+    },
     methods: {
         createAccount() {
-            alert('Test');
+            let token = Buffer.from(this.email+':'+this.password+'', 'utf8').toString('base64');
+
+            if(this.password != this.confirm_password) {
+                this.$refs.password2.classList.add('is-danger');
+                this.$refs.password1.classList.add('is-danger');
+                console.log('wrong passwords')
+            } else {
+                api.post("/signUp", {
+                    name : this.name,
+                    firstname : this.firstname,
+                    mail : this.mail,
+                    password : this.password
+                }, {
+                headers: {
+                    'Authorization' : 'Basic ' + token,
+                }
+                }).then(response => {
+                    alert("Le compte a été crée")
+                    console.log(response.data)
+                    this.$router.push("/events")
+                }).catch(error => {
+                    alert(error.response.data.message)
+                })
+            }
         }
     }
 }
