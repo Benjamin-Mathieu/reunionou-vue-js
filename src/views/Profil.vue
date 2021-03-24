@@ -27,8 +27,7 @@ export default {
     .profil {
         height: 100vh;
         text-align: center;
-        //display: flex; flex-direction: column; justify-content: center; align-items: center;
-
+    
         .form-profil {
             padding: 1em;
             background: #FFFFFF;
