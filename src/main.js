@@ -7,9 +7,9 @@ require('@/assets/main.scss');
 
 // Connexion à l'api
 window.api = axios.create({
-  baseURL: "https://allweb.fun/coop/api"
+  baseURL: "http://docketu.iutnc.univ-lorraine.local:14000",
+  // withCredentials: true
 });
-
 Vue.config.productionTip = false;
 Vue.prototype.$bus = new Vue();
 
