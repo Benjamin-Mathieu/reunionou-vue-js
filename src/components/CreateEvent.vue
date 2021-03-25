@@ -24,6 +24,7 @@
 </template>
 
 <script>
+
 export default {
     data() {
         return {
@@ -44,6 +45,8 @@ export default {
             this.close = true
         },
         createEvent() {
+            let jwt_token = this.$store.state.jwtToken;
+
             api.post("/events", {
                 title: this.title,
                 description: this.description,
@@ -52,8 +55,12 @@ export default {
                 public: this.checkbox_public,
                 user_id: 1,
                 main_event: 1
+            }, {
+                headers: {
+                    "Authorization": "Bearer " + jwt_token
+                }
             }).then(response => {
-                alert("Event créated");
+                alert("Event created");
                 console.log(response.data.token)
                 console.log(response.data.id)
                 this.$router.push("/" + response.data.id + '?token=' + response.data.token);
