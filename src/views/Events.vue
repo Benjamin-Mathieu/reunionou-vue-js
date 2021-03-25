@@ -1,57 +1,26 @@
 <template>
-    <div class="events">
-        <h1>Evenement(s)</h1>
-        <!-- <Sidebar/> -->
-        <form class="form-evenement" v-on:submit.prevent="event">
-            <h2>A venir </h2>
-            <div class="event">
-                <div class="field">
-                    <label class="label">Adresse : </label>
-                </div>
-                <div class="field">
-                    <label class="label">Date et heure : </label>
-                    <hr>
-                </div>
-                <div class="field">
-                    <label class="label">Participant(s) : </label>
-                </div>
+    <div>
+        <section class="public-events">
+            <h1>Evènements publics</h1>
+            <div v-for="event in $store.state.events">
+                <Event :event="event"/>
             </div>
-        </form>
-        <form class="form-invitation" v-on:submit.prevent="invitation">
-            <h2>Invitation(s)</h2>
-            <div class="event">
-                <div class="field">
-                    <label class="label">Alex vous à invité</label>
-                    <hr>
-                </div>
-                <div class="field">
-                    <label class="label">Titre : </label>
-                </div>
-                <div class="field">
-                    <label class="label">Lieu : </label>
-                </div>
-                <div class="field">
-                    <label class="label">Date : </label>
-                </div>
-                <div class="field">
-                    <label class="label">Heure : </label>
-                </div>
+        </section>
 
-                <div>
-                    <p><button class="button is-success">OUI</button></p>
-                    <p><button class="button is-danger">NON</button></p>
-                </div>
-            </div>
-        </form>
-        <p><button class="button is-info">Ajouter un évènement</button></p>
+        <CreateEvent/>
+        
     </div>
 </template>
 
 <script>
 import Sidebar from '@/components/Sidebar.vue';
+import Event from '@/components/Event.vue';
+import CreateEvent from '@/components/CreateEvent.vue';
 export default {
     components: {
-        Sidebar
+        Sidebar,
+        Event,
+        CreateEvent
     }
 }
 </script>

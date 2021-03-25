@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import jwt_decode from "jwt-decode";
+
 export default {
   data() {
     return {
@@ -48,6 +50,21 @@ export default {
     },
     connectAccount() {
       console.log(this.email, this.password);
+      let token = Buffer.from(this.email+':'+this.password+'', 'utf8').toString('base64');
+
+      api.post("/signIn", {}, {
+              headers: {
+                'Authorization' : 'Basic ' + token,
+              }
+            }).then(response => {
+                alert("Vous êtes bien connecté")
+                var jwt_token = response.data;
+                var decoded = jwt_decode(jwt_token);
+                console.log(decoded);
+                // this.$router.push("/events")
+            }).catch(error => {
+                alert(error.response.data.message)
+            })
     }
   }
 }
