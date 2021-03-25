@@ -21,55 +21,23 @@ export default {
         Sidebar,
         Event,
         CreateEvent
+    },
+    mounted() {
+      this.getEvents();
+      this.$bus.$on('getEvents', this.getEvents);
+    },
+    methods: {
+      getEvents() {
+        api.get("/events").then(response => {
+                this.$store.commit("setEvents", response.data.events);
+            }).catch(error => {
+                alert(error.response.data.message)
+            })
+      }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-    .events {
-        display: flex; flex-direction: column; justify-content: center;
-
-        .form-evenement {
-            padding: 1em;
-            background: #ffffff;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            border-radius: 10px;
-            
-            .event {
-                box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-                border-radius: 10px;
-                background: #b9b9b9;
-
-                .label {
-                    color: white;
-                    
-                }
-            }
-        }
-        .form-invitation {
-            margin-top: 5em;
-            padding: 1em;
-            background: #ffffff;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            border-radius: 10px;
-            
-            .event {
-                box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-                border-radius: 10px;
-                background: #b9b9b9;
-
-                .label {
-                    color: white;
-                }
-
-                .button{
-                    float: left;
-                }
-            }
-        }
-        .button{
-            display: block;
-            margin : auto;
-        }
-    }
+    
 </style>
