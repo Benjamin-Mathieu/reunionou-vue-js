@@ -21,6 +21,23 @@ export default {
         Sidebar,
         Event,
         CreateEvent
+    },
+    mounted() {
+      this.getEvents();
+      this.$bus.$on('getEvents', this.getEvents);
+    },
+    methods: {
+      getEvents() {
+        api.get("/events").then(response => {
+                this.$store.commit("setEvents", response.data.events);
+            }).catch(error => {
+                alert(error.response.data.message)
+            })
+      }
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    
+</style>

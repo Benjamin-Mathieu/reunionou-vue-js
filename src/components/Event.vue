@@ -3,9 +3,8 @@
             <ul>
                 <li>Titre: {{event.event.title}} </li>
                 <li>Adresse: {{event.event.adress}} </li>
-                <li>Créateur: {{event.event.creator.firstname}} </li>
+                <li>Createur: {{event.event.creator.firstname}} </li>
                 <li>Date: {{event.event.date}} </li>
-                <li>ID: {{event.event.id}} </li>
             </ul>
         
     </div>
@@ -15,7 +14,7 @@
 export default {
     props: ['event'],
     mounted() {
-        console.log(this.event.event);
+        console.log(this.event);
     }
     
 }
