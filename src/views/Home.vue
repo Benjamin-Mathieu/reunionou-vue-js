@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import jwt_decode from "jwt-decode";
+
 export default {
   data() {
     return {
@@ -56,8 +58,10 @@ export default {
               }
             }).then(response => {
                 alert("Vous êtes bien connecté")
-                console.log(response.data)
-                this.$router.push("/events")
+                var jwt_token = response.data;
+                var decoded = jwt_decode(jwt_token);
+                console.log(decoded);
+                // this.$router.push("/events")
             }).catch(error => {
                 alert(error.response.data.message)
             })
