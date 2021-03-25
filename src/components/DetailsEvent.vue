@@ -6,7 +6,8 @@
             <div>Adresse: {{adress}}</div>
             <div>Créateur: {{creator}}</div>
             <div>Date: {{date}}</div>
-    </div>
+            <div>Participants: {{participants}}</div>
+        </div>
 </template>
 
 <script>
@@ -22,7 +23,8 @@ export default {
             description: '',
             adress: '',
             creator: '',
-            date: ''
+            date: '',
+            participants: ''
         }
     },
     mounted() {
@@ -44,6 +46,10 @@ export default {
                 this.adress = response.data.event.adress
                 this.creator = response.data.event.creator.firstname
                 this.date = response.data.event.date
+
+                response.data.event.participants.forEach(participant => {
+                    this.participants += " " + participant.firstname
+                });
 
                 // Affichage de la carte
                 api_adress.get("/search/?q=" + this.adress.replaceAll(" ", "+")).then(res => {
