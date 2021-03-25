@@ -1,6 +1,6 @@
 <template>
     <div class="inscription">
-        <form class="form-connexion" v-on:submit.prevent="createAccount">
+        <form class="form-inscription" v-on:submit.prevent="createAccount">
             <div class="columns">
                 <div class="column">
                     <div class="field">
@@ -65,6 +65,7 @@
 </template>
 
 <script>
+
 export default {
     data() {
         return {
@@ -112,7 +113,7 @@ export default {
         text-align: center;
         display: flex; flex-direction: column; justify-content: center; align-items: center;
 
-        .form-connexion {
+        .form-inscription {
             padding: 1em;
             background: #FFFFFF;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
