@@ -10,19 +10,6 @@ import Sidebar from '@/components/Sidebar.vue';
 export default {
     components: {
         Sidebar
-    },
-    mounted() {
-      this.getEvents();
-      this.$bus.$on('getEvents', this.getEvents);
-    },
-    methods: {
-      getEvents() {
-        api.get("/events").then(response => {
-                this.$store.commit("setEvents", response.data.events);
-            }).catch(error => {
-                alert(error.response.data.message)
-            })
-      }
     }
   }
 </script>
