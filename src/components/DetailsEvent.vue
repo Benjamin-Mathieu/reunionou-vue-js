@@ -13,6 +13,7 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import icon from '../assets/logo.png';
+// import icon from 'leaflet/dist/images/marker-icon.png';
 
 export default {
     data() {
@@ -54,12 +55,15 @@ export default {
                 
                     let openStreetMapLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                         attribution: '© OpenStreetMap contributors',
-                        maxZoom: 50
+                        maxZoom: 100,
+                        tileSize: 512,
+                        zoomOffset: -1
                         });
 
                     let DefaultIcon = L.icon({
                         iconUrl: icon,
                         iconSize:     [50, 95], // size of the icon
+                        iconAnchor: [25,95]
                     });
                     L.Marker.prototype.options.icon = DefaultIcon;
 
