@@ -23,8 +23,8 @@ const routes = [
     component: () => import('../views/Profil.vue')
   },
   {
-    path: '/nouveauMdp',
-    component: () => import('../views/NouveauMdp.vue')
+    path: '/newMdp',
+    component: () => import('../views/NewMdp.vue')
   }
 ]
 

@@ -6,7 +6,7 @@
     
             <p>Bastien</p>
             <p>test@gmail.fr</p>
-            <p><router-link to="/NouveauMdp">Changer de mot de passe</router-link></p>
+            <p><router-link to="NewMdp">Changer de mot de passe</router-link></p>
             <p><button class="button is-danger">Supprimer compte</button></p>
             
         </form>

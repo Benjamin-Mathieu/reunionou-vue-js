@@ -1,5 +1,5 @@
 <template>
-    <div class="nouveauMdp">
+    <div class="newMdp">
         <form class="form-nouveauMdp" v-on:submit.prevent="newPassword">
             <div class="columns">
                 <div class="column">
@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .nouveauMdp {
+    .newMdp {
         height: 100vh;
         text-align: center;
         display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -59,6 +59,7 @@ export default {
             background: #FFFFFF;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
             border-radius: 10px;
+
         }
     }
 </style>

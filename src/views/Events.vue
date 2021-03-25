@@ -5,59 +5,45 @@
         <form class="form-evenement" v-on:submit.prevent="event">
             <h2>A venir </h2>
             <div class="event">
-                <div>
-                    <div class="field">
-                        <label class="label">Adresse : </label>
-                    </div>
+                <div class="field">
+                    <label class="label">Adresse : </label>
                 </div>
-                <div>
-                    <div class="field">
-                        <label class="label">Date et heure : </label>
-                        <hr>
-                    </div>
+                <div class="field">
+                    <label class="label">Date et heure : </label>
+                    <hr>
                 </div>
-                <div>
-                    <div class="field">
-                        <label class="label">Participant(s) : </label>
-                    </div>
+                <div class="field">
+                    <label class="label">Participant(s) : </label>
                 </div>
             </div>
         </form>
         <form class="form-invitation" v-on:submit.prevent="invitation">
             <h2>Invitation(s)</h2>
             <div class="event">
-                <div>
-                    <div class="field">
-                        <label class="label">Alex vous à invité</label>
-                        <hr>
-                    </div>
+                <div class="field">
+                    <label class="label">Alex vous à invité</label>
+                    <hr>
                 </div>
-                <div>
-                    <div class="field">
-                        <label class="label">Titre : </label>
-                    </div>
+                <div class="field">
+                    <label class="label">Titre : </label>
                 </div>
-                <div>
-                    <div class="field">
-                        <label class="label">Lieu : </label>
-                    </div>
+                <div class="field">
+                    <label class="label">Lieu : </label>
                 </div>
-                <div>
-                    <div class="field">
-                        <label class="label">Date : </label>
-                    </div>
+                <div class="field">
+                    <label class="label">Date : </label>
                 </div>
-                <div>
-                    <div class="field">
-                        <label class="label">Heure : </label>
-                    </div>
+                <div class="field">
+                    <label class="label">Heure : </label>
                 </div>
+
                 <div>
                     <p><button class="button is-success">OUI</button></p>
                     <p><button class="button is-danger">NON</button></p>
                 </div>
             </div>
         </form>
+        <p><button class="button is-info">Ajouter un évènement</button></p>
     </div>
 </template>
 
@@ -72,8 +58,6 @@ export default {
 
 <style lang="scss" scoped>
     .events {
-        //height: 100vh;
-        //text-align: center;
         display: flex; flex-direction: column; justify-content: center;
 
         .form-evenement {
@@ -108,7 +92,15 @@ export default {
                 .label {
                     color: white;
                 }
+
+                .button{
+                    float: left;
+                }
             }
+        }
+        .button{
+            display: block;
+            margin : auto;
         }
     }
 </style>
