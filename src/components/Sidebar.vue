@@ -2,7 +2,7 @@
     <div class="sidebar">
         <nav class="navbar" role="navigation" aria-label="dropdown navigation">
             <a class="navbar-item">
-                <router-link to="/home"><h1>Reunionou</h1></router-link>
+                <router-link to="/"><h1>Reunionou</h1></router-link>
             </a>
             <a class="navbar-item">
                 <router-link to="/profil">Profil</router-link>
