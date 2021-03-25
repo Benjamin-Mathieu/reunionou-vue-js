@@ -12,7 +12,7 @@ export default new Vuex.Store({
   plugins : [vuexLocal.plugin],
   state: {
     events: [],
-    jwtToken: ""
+    jwtToken: false
   },
   mutations: {
     setEvents(state,events)
