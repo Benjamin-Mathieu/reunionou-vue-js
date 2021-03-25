@@ -10,12 +10,17 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    events: []
+    events: [],
+    jwtToken: ""
   },
   mutations: {
     setEvents(state,events)
     {
       state.events= events;
+    },
+    setToken(state, jwtToken)
+    {
+      state.jwtToken = jwtToken;
     }
   },
   actions: {
