@@ -7,7 +7,6 @@
                 <li>Date: {{event.event.date}} </li>
                 <li><router-link :to="{name: 'Event', params:{id : event.event.id}, query: { token: event.event.token }}">Voir détails</router-link></li>
             </ul>
-        
     </div>
 </template>
 
@@ -20,13 +19,14 @@ export default {
     
 }
 </script>
-
 <style lang="scss" scoped>
     .event {
         ul {
-            margin: auto;
+            margin-top: 2em;
+            padding: 1em;
             background-color: whitesmoke;
-            border: 1px solid black;
+            border-radius: 10px;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         }
     }
 </style>

@@ -1,33 +1,38 @@
 <template>
   <div class="home">
-      <form class="form-connexion" v-on:submit.prevent="connectAccount">
-        <div class="field">
+    <div class="title">
+      <h1>Connexion</h1>
+    </div>
+    <form class="form-connexion" v-on:submit.prevent="connectAccount">
+      <div class="field">
         <p class="control has-icons-left has-icons-right">
-          <input class="input" type="email" placeholder="Email"  v-model="email">
+          E-mail
+          <input class="input" type="email" placeholder="Email" v-model="email">
           <span class="icon is-small is-left">
-            <i class="fas fa-envelope"></i>
+              <i class="fas fa-envelope"></i>
           </span>
           <span class="icon is-small is-right">
             <i class="fas fa-check"></i>
           </span>
         </p>
-    </div>
+      </div>
 
-    <div class="field">
-      <p class="control has-icons-left">
-        <input class="input" type="password" placeholder="Password" v-model="password">
-        <span class="icon is-small is-left">
-          <i class="fas fa-lock"></i>
-        </span>
-      </p>
-    </div>
+      <div class="field">
+        <p class="control has-icons-left has-icons-right">
+          Mot de passe
+          <input class="input" type="password" placeholder="Password" v-model="password">
+          <span class="icon is-small is-left">
+            <i class="fas fa-lock"></i>
+          </span>
+        </p>
+      </div>
 
-    <div class="field">
-      <p class="control">
-        <button class="button is-success">Login</button>
-      </p>
-    </div>
-    <router-link to="/inscription">Crée un compte</router-link>
+      <div class="field">
+        <p class="control">
+          <button class="button is-success">Connexion</button>
+        </p>
+      </div>
+      <div class="inscription"><router-link to="/inscription">Inscription</router-link></div>
     </form>
   </div>
 </template>
@@ -75,10 +80,25 @@ export default {
 <style lang="scss" scoped>
 
   .home {
-    height: 100vh;
-    text-align: center;
+    height: 50vh;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
-    
+
+    .input{
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 10px;
+      background: white;
+    }
+
+    .button{
+      color: white;
+      display: block;
+      margin : auto;
+    }
+
+    .inscription{
+      text-align: center;
+    }
+
   }
   
 </style>

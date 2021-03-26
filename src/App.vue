@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Sidebar/>
-    <router-view/>
+    <router-view class="main"/>
   </div>
 </template>
 
@@ -11,11 +11,6 @@ export default {
     components: {
         Sidebar
     },
-    mounted() {
-      if(!this.$store.state.jwtToken) {
-        alert('Vous êtes déconnecté !');
-      }
-    }
   }
 </script>
 

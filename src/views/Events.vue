@@ -2,6 +2,7 @@
     <div>
         <section class="public-events">
             <h1>Evènements publics</h1>
+            
             <div v-for="event in $store.state.events">
                 <Event :event="event"/>
             </div>
@@ -39,5 +40,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    
+
 </style>
