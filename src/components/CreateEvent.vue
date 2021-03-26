@@ -63,7 +63,7 @@ export default {
                 alert("Event created");
                 console.log(response.data.token)
                 console.log(response.data.id)
-                this.$router.push("/events/" + response.data.id + '?token=' + response.data.token);
+                this.$router.push("/event/" + response.data.id + '?token=' + response.data.token);
                 console.log(response.data)
             }).catch(error => {
                 alert(error.response.data.message)
