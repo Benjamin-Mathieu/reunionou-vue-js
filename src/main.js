@@ -10,6 +10,10 @@ window.api = axios.create({
   baseURL: "http://docketu.iutnc.univ-lorraine.local:14000",
   // withCredentials: true
 });
+window.api_adress = axios.create({
+  baseURL: "https://api-adresse.data.gouv.fr"
+});
+
 Vue.config.productionTip = false;
 Vue.prototype.$bus = new Vue();
 
