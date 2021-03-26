@@ -11,11 +11,14 @@
         </div>
             
         <div class="buttons">
-            <button @click="participateEvent" class="button is-success" v-bind:class="{ show: showButtons }" :disabled="disabled" ref="participate">
+            <button @click="participateEvent" class="button is-success" v-bind:class="{ hide: hideParticipateButtons }" :disabled="disabled" ref="participate">
                 <span>Je participe</span>
             </button>
-            <button class="button is-danger" v-bind:class="{ show: showButtons }" :disabled="disabled" ref="notparticipate">
+            <button class="button is-danger" v-bind:class="{ hide: hideParticipateButtons }" :disabled="disabled" ref="notparticipate">
                 <span>Je ne participe pas</span>
+            </button>
+            <button @click="deleteEvent" class="button is-danger" v-bind:class="{ hide: hideDeleteButton }">
+                <span>Supprimer l'event</span>
             </button>
         </div>   
             
@@ -38,7 +41,8 @@ export default {
             date: '',
             participants: '',
             disabled: false,
-            showButtons: false
+            hideParticipateButtons: false,
+            hideDeleteButton: true
         }
     },
     mounted() {
@@ -66,7 +70,8 @@ export default {
                 
                 // Check si c'est le créateur de l'évènement et enlève les boutons de l'affichage
                 if(response.data.event.user_id == decoded.user.id) {
-                    this.showButtons = true
+                    this.hideParticipateButtons = true
+                    this.hideDeleteButton = false
                 }
 
                 response.data.event.participants.forEach(participant => {
@@ -127,6 +132,22 @@ export default {
             }).catch(error => {
                 alert(error.response.data.message);
             });
+        },
+
+        deleteEvent() {
+            if(confirm("Voulez-vous supprimer l'évènement ?")) {
+                api.delete("/events/" + this.$route.params.id, 
+                {
+                    headers: {
+                        "Authorization": "Bearer " + this.$store.state.jwtToken
+                    }
+                }).then(response => {
+                    alert('Event deleted');
+                    this.$router.push("/events");
+                }).catch(error => {
+                    alert(error.response.data.message);
+                });
+            }
         }
     }
 }
@@ -138,7 +159,7 @@ export default {
         #map {
             height: 400px; width: 100%;
         }
-        .show {
+        .hide {
             display: none
         }
     }
