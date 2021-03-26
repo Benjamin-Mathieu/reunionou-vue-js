@@ -15,6 +15,10 @@ const routes = [
     component: () => import('../views/Inscription.vue')
   },
   {
+    path: '/profil',
+    component: () => import('../views/Profil.vue')
+  },
+  {
     path: '/events',
     component: () => import('../views/Events.vue')
   },
