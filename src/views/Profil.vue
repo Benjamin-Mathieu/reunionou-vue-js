@@ -35,6 +35,11 @@ export default {
         }
     },
     mounted() {
+        if(!this.$store.state.jwtToken) {
+            alert('Vous devez être connecté pour voir votre profil !');
+            this.$router.push("/");
+        };
+        
         let jwt_token = this.$store.state.jwtToken;
         let decoded = jwt_decode(jwt_token);
         console.log(decoded.user);

@@ -11,10 +11,10 @@
         </div>
             
         <div class="buttons">
-            <button @click="participateEvent" class="button is-success" v-bind:class="{ hide: hideParticipateButtons }" :disabled="disabled" ref="participate">
+            <button @click="participateEvent" class="button is-success" v-bind:class="{ hide: hideParticipateButtons }" ref="participate">
                 <span>Je participe</span>
             </button>
-            <button class="button is-danger" v-bind:class="{ hide: hideParticipateButtons }" :disabled="disabled" ref="notparticipate">
+            <button class="button is-danger" :class="{ hide: hideParticipateButtons }" ref="notparticipate">
                 <span>Je ne participe pas</span>
             </button>
             <button @click="deleteEvent" class="button is-danger" v-bind:class="{ hide: hideDeleteButton }">
@@ -40,7 +40,6 @@ export default {
             creator: '',
             date: '',
             participants: '',
-            disabled: false,
             hideParticipateButtons: false,
             hideDeleteButton: true
         }

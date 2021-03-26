@@ -11,8 +11,40 @@
                 <router-link to="/events">Evènements</router-link>
             </a>
         </nav>
+        <button v-if="this.$store.state.jwtToken === false" class="button" >
+            <router-link to="/" >
+                <span>Connexion</span>
+            </router-link>
+        </button>
+        <button v-else @click="disconnectUser" :class="{ hide: hide }" class="button" id="disconnectButton">
+            <span>Se déconnecter</span>
+        </button>
     </div>
 </template>
+
+<script>
+export default {
+    data() {
+        return{
+            hide: true
+        }
+    },
+    mounted() {
+        if(this.$store.state.jwtToken) {
+            this.hide = false;
+        }
+    },
+    methods: {
+        disconnectUser() {
+            if(confirm("Se déconnecter ?")) {
+                this.$store.state.jwtToken = false;
+                this.$store.commit("setToken", this.$store.state.jwtToken);
+                this.$router.push("/");
+            } 
+        }
+    }
+}
+</script>
 
 <style lang="scss" scoped>
     .sidebar {
