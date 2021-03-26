@@ -22,7 +22,16 @@ const routes = [
     path: '/event/:id',
     name: "Event",
     component: () => import('../components/DetailsEvent.vue')
+  },
+  {
+    path: '/profil',
+    component: () => import('../views/Profil.vue')
+  },
+  {
+    path: '/newMDP',
+    component: () => import('../views/NewMdp.vue')
   }
+  
 ]
 
 const router = new VueRouter({

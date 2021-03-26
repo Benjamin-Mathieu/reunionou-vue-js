@@ -25,7 +25,6 @@ export default {
 
 <style lang="scss" scoped>
     .profil {
-        //height: 100vh;
         text-align: center;
     
         .form-profil {

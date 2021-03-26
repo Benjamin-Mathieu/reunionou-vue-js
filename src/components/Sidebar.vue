@@ -25,11 +25,15 @@
         text-align: center;
 
         .navbar{
-            height: 100vh;
+            height: 100%;
+            width: auto;
             position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
             display: block;
             background-color: #444257;
-
+            overflow-x: hidden;
         }
         h1 {
             color: white;
@@ -39,13 +43,12 @@
         a{
             color: white;
             font-size: 20px;
-
-            
         } 
         .navbar-item {
             text-decoration: none;
             color: white;
             background-color: transparent;
+            display: block;
 
         }
     }
