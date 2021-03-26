@@ -6,17 +6,19 @@
         <div v-if="show" id="create-event">
             <section>
                 <h3>Ajout évènement</h3>
-                <button class="close" @click="maskForm">X</button>
+                <button class="close" @click="maskForm">❌</button>
                 <form @submit.prevent="createEvent">
                         <div><input v-model="title" required type="text" placeholder="Titre"></div>
                         <div><input v-model="description" required type="text" placeholder="Description"></div>
                         <div><input v-model="adress" required type="text" placeholder="Adresse"></div>
                         <div><input v-model="date" required type="date"></div>
+                        <!-- <div><input v-model="time" required type="time"></div> -->
                         <div>
                             <label for="public">Public</label>
                             <input v-model="checkbox_public" type="checkbox" id="public">
                         </div>
-                        <button class="button">Créer un évènement</button>
+                        <button class="button is-info">Créer un évènement</button>
+                        <button type="button" @click="maskForm" class="button is-warning button-clear">Annuler</button>
                 </form>
             </section>
         </div>
@@ -33,15 +35,16 @@ export default {
             description: '',
             adress: '',
             date: '',
+            time: '',
             checkbox_public: false
         }
     },
     methods: {
         showForm() {
-            this.show = true
+            this.show = true;
         },
         maskForm() {
-            this.close = true
+            this.show = false;
         },
         createEvent() {
             let jwt_token = this.$store.state.jwtToken;
@@ -93,9 +96,14 @@ export default {
 
         .close {
             position: absolute;
-            top: 0;
-            right: 0;
-            font-size: 0.7em;
+            top: -1em;
+            right: -1em;
+            width: 3em;
+            height: 3em;
+            line-height: 3em;
+            margin: 0;
+            padding: 0;
+            border-radius: 50%;
         }
         .close:hover {
             cursor: pointer;
@@ -123,7 +131,6 @@ export default {
             padding: .7em;
             border-radius: .3em;
             border: none;
-            background-color: #2750B8;
             color: white;
             opacity: 0.8;
             transition: .3s ease;

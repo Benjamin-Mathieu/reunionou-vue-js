@@ -10,20 +10,43 @@
             <a class="navbar-item">
                 <router-link to="/events">Evènements</router-link>
             </a>
+            <a class="navbar-item">
+                <router-link to="/">Déconnexion</router-link>
+            </a>
         </nav>
     </div>
 </template>
 
 <style lang="scss" scoped>
     .sidebar {
+        text-decoration: none;
         width: 264px;
         background-color: #444257;
         text-align: center;
-        h1 {
-            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
+        .navbar{
+            height: 100vh;
+            position: fixed;
+            display: block;
+            background-color: #444257;
+
         }
+        h1 {
+            color: white;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 50px;
+        }
+        a{
+            color: white;
+            font-size: 20px;
+
+            
+        } 
         .navbar-item {
+            text-decoration: none;
+            color: white;
             background-color: transparent;
+
         }
     }
 </style>
