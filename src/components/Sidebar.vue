@@ -10,18 +10,15 @@
             <a class="navbar-item">
                 <router-link to="/events">Evènements</router-link>
             </a>
-            <a class="navbar-item">
-                <router-link to="/">Déconnexion</router-link>
-            </a>
-        </nav>
-        <button v-if="this.$store.state.jwtToken === false" class="button" >
+            <button v-if="this.$store.state.jwtToken === false" class="button is-success" >
             <router-link to="/" >
                 <span>Connexion</span>
             </router-link>
-        </button>
-        <button v-else @click="disconnectUser" :class="{ hide: hide }" class="button" id="disconnectButton">
-            <span>Se déconnecter</span>
-        </button>
+            </button>
+            <button v-else @click="disconnectUser" :class="{ hide: hide }" class="button " id="disconnectButton">
+                <span>Se déconnecter</span>
+            </button>
+        </nav>
     </div>
 </template>
 
