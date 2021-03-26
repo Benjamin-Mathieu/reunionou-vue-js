@@ -1,20 +1,32 @@
 <template>
-    <div>
+    <section class="detail-event">
         <div id="map"></div>
-            <div>Titre: {{title}}</div>
-            <div>Description: {{description}}</div>
-            <div>Adresse: {{adress}}</div>
-            <div>Créateur: {{creator}}</div>
-            <div>Date: {{date}}</div>
-            <div>Participants: {{participants}}</div>
+        <div class="info-event">
+            Titre: {{title}}
+            Description: {{description}}
+            Adresse: {{adress}}
+            Créateur: {{creator}}
+            Date: {{date}}
+            Participants: {{participants}}
         </div>
+            
+        <div class="buttons">
+            <button @click="participateEvent" class="button is-success" v-bind:class="{ show: showButtons }" :disabled="disabled" ref="participate">
+                <span>Je participe</span>
+            </button>
+            <button class="button is-danger" v-bind:class="{ show: showButtons }" :disabled="disabled" ref="notparticipate">
+                <span>Je ne participe pas</span>
+            </button>
+        </div>   
+            
+    </section>
 </template>
 
 <script>
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import icon from '../assets/logo.png';
-// import icon from 'leaflet/dist/images/marker-icon.png';
+import jwt_decode from "jwt-decode";
 
 export default {
     data() {
@@ -24,14 +36,14 @@ export default {
             adress: '',
             creator: '',
             date: '',
-            participants: ''
+            participants: '',
+            disabled: false,
+            showButtons: false
         }
     },
     mounted() {
         this.getEvent();
         this.$bus.$on('getEvent', this.getEvent);
-
-        console.log(this.$store.state.jwtToken)
     },
     methods: {
         getEvent() {
@@ -47,9 +59,20 @@ export default {
                 this.creator = response.data.event.creator.firstname
                 this.date = response.data.event.date
 
+                let jwt_token = this.$store.state.jwtToken;
+                        let decoded = jwt_decode(jwt_token);
+                        console.log(decoded.user);
+
+                
+                // Check si c'est le créateur de l'évènement et enlève les boutons de l'affichage
+                if(response.data.event.user_id == decoded.user.id) {
+                    this.showButtons = true
+                }
+
                 response.data.event.participants.forEach(participant => {
                     this.participants += " " + participant.firstname
                 });
+
 
                 // Affichage de la carte
                 api_adress.get("/search/?q=" + this.adress.replaceAll(" ", "+")).then(res => {
@@ -83,18 +106,41 @@ export default {
             })
         },
 
-        getMap() {
-            console.log(adress);
+
+
+        participateEvent() {
+            let jwt_token = this.$store.state.jwtToken;
+            let decoded = jwt_decode(jwt_token);
+            console.log(decoded.user);
+
+            api.post("/events/" + this.$route.params.id + "/participants", 
+            {
+                "mail": decoded.user.mail
+            },
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.$store.state.jwtToken
+                }
+            }).then(response => {
+                alert('User added');
+                this.disabled = true;
+            }).catch(error => {
+                alert(error.response.data.message);
+            });
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-    #map {
+
+    .detail-event {
+        #map {
             height: 400px; width: 100%;
         }
-        .leaflet-default-icon-path {
-    background-image: url(https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png);
-}
+        .show {
+            display: none
+        }
+    }
+    
 </style>
