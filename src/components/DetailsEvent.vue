@@ -47,6 +47,10 @@ export default {
     mounted() {
         this.getEvent();
         this.$bus.$on('getEvent', this.getEvent);
+
+        if(this.participants === "") {
+            this.participants = "Aucun participant pour le moment"
+        } 
     },
     methods: {
         getEvent() {

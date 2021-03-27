@@ -1,12 +1,11 @@
 <template>
     <div>
-        <button class="button new-event-button" @click="showForm">Créer un évènement</button>
+        <button class="button new-event-button" @click="showForm" :class="{hide: hideCreateButton}">Créer un évènement</button>
         
         <!-- Si le bouton est cliqué alors le formulaire pour crée un event s'affiche -->
         <div v-if="show" id="create-event">
             <section>
                 <h3>Ajout évènement</h3>
-                <button class="close" @click="maskForm">❌</button>
                 <form @submit.prevent="createEvent">
                         <div><input v-model="title" required type="text" placeholder="Titre"></div>
                         <div><input v-model="description" required type="text" placeholder="Description"></div>
@@ -17,7 +16,7 @@
                             <label for="public">Public</label>
                             <input v-model="checkbox_public" type="checkbox" id="public">
                         </div>
-                        <button class="button is-info">Créer un évènement</button>
+                        <button class="button is-link">Créer un évènement</button>
                         <button type="button" @click="maskForm" class="button is-warning button-clear">Annuler</button>
                 </form>
             </section>
@@ -36,7 +35,14 @@ export default {
             adress: '',
             date: '',
             time: '',
-            checkbox_public: false
+            checkbox_public: false,
+            hideCreateButton: true
+        }
+    },
+    mounted() {
+        if(this.$store.state.jwtToken) {
+            this.hideCreateButton = false;
+            console.log('test')
         }
     },
     methods: {
@@ -124,21 +130,6 @@ export default {
                 border-radius: .3em;
                 width: 100%;
             }
-        }
-
-        .button {
-            margin: 1em;
-            padding: .7em;
-            border-radius: .3em;
-            border: none;
-            color: white;
-            opacity: 0.8;
-            transition: .3s ease;
-        }
-        .button:hover {
-            cursor: pointer;
-            opacity: 1;
-            transition: .7s ease;
         }
     }}
     }

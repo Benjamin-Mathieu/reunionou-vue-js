@@ -89,12 +89,6 @@ export default {
       background: white;
     }
 
-    .button{
-      color: white;
-      display: block;
-      margin : auto;
-    }
-
     .inscription{
       text-align: center;
     }

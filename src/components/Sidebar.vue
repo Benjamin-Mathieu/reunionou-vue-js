@@ -1,21 +1,28 @@
 <template>
     <div class="sidebar">
         <nav class="navbar" role="navigation" aria-label="dropdown navigation">
-            <a class="navbar-item">
+            <a>
                 <router-link to="/"><h1>Reunionou</h1></router-link>
             </a>
-            <a class="navbar-item">
+             <div class="navbar-brand">
+                <img src="../assets/account_circle-white-24dp.svg" alt="icons" style="width:40px; height: 40px">
+                <a class="navbar-item">
                 <router-link to="/profil">Profil</router-link>
-            </a>
-            <a class="navbar-item">
+                </a>
+            </div>
+            <div class="navbar-brand">
+                <img src="../assets/celebration-white-24dp.svg" alt="icons" style="width:40px; height: 40px">
+                <a class="navbar-item">
                 <router-link to="/events">Evènements</router-link>
-            </a>
+                </a>
+            </div>
+            
             <button v-if="this.$store.state.jwtToken === false" class="button is-success" >
             <router-link to="/" >
                 <span>Connexion</span>
             </router-link>
             </button>
-            <button v-else @click="disconnectUser" :class="{ hide: hide }" class="button " id="disconnectButton">
+            <button v-else @click="disconnectUser" :class="{ hide: hide }" class="button" id="disconnectButton">
                 <span>Se déconnecter</span>
             </button>
         </nav>
@@ -50,35 +57,27 @@ export default {
     .sidebar {
         text-decoration: none;
         width: 264px;
-        background-color: #444257;
+        background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(76,45,253,1) 100%);
         text-align: center;
 
         .navbar{
             height: 100%;
-            width: auto;
             position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
             display: block;
-            background-color: #444257;
+            background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(76,45,253,1) 100%);
             overflow-x: hidden;
         }
         h1 {
             color: white;
-            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-family: 'Roboto';
             font-size: 50px;
         }
         a{
             color: white;
             font-size: 20px;
-        } 
-        .navbar-item {
-            text-decoration: none;
-            color: white;
-            background-color: transparent;
-            display: block;
-
+        }
+        .navbar-brand:hover {
+            background-color: rgba(34,193,195,0.8);
         }
     }
 </style>

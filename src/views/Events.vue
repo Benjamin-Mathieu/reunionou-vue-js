@@ -1,15 +1,15 @@
 <template>
     <div>
-        <section class="public-events">
-            <h1>Evènements publics</h1>
-            
-            <div v-for="event in $store.state.events">
+        <h3 class="title is-3">Evènements publics</h3>
+        <section class="public-events card">
+            <div class="card-content columns is-mobile is-multiline is-centered">
+                <div v-for="event in $store.state.events">
                 <Event :event="event"/>
+                </div>
             </div>
         </section>
 
         <CreateEvent/>
-        
     </div>
 </template>
 
@@ -40,5 +40,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+    .public-events{
+        background-color: white;
+        padding: 1em;
+        margin: 2em;
+    }
 </style>
