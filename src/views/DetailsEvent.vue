@@ -1,6 +1,6 @@
 <template>
     <section class="detail-event">
-        <div id="map"></div>
+        <div id="map" v-bind:class="{ hide: hideMap }"></div>
         <div class="info-event">
             Titre: {{title}}
             Description: {{description}}
@@ -20,8 +20,14 @@
             <button @click="deleteEvent" class="button is-danger" v-bind:class="{ hide: hideDeleteButton }">
                 <span>Supprimer l'event</span>
             </button>
-        </div>   
-            
+        </div>
+        <div v-for="message in $store.state.messages">
+                <Message :message="message"/>
+        </div>
+        <form @submit.prevent="sendMessage">
+            <input class="input" v-model="message" required type="text" placeholder="Tapez votre message">
+            <button class="button is-info">Envoyer</button>
+        </form>
     </section>
 </template>
 
@@ -30,8 +36,12 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import icon from '../assets/logo.png';
 import jwt_decode from "jwt-decode";
+import Message from '@/components/Message.vue';
 
 export default {
+    components: {
+        Message
+    },
     data() {
         return {
             title: '',
@@ -41,18 +51,47 @@ export default {
             date: '',
             participants: '',
             hideParticipateButtons: false,
-            hideDeleteButton: true
+            hideDeleteButton: true,
+            hideMap: false,
+            message: ''
         }
     },
     mounted() {
         this.getEvent();
         this.$bus.$on('getEvent', this.getEvent);
+        this.getEventMessage();
+        this.$bus.$on('getEventMessage', this.getEventMessage);
 
-        if(this.participants === "") {
-            this.participants = "Aucun participant pour le moment"
-        } 
+        console.log(this.$store.state.messages);
     },
     methods: {
+        getEventMessage() {
+            api.get("/events/" + this.$route.params.id + "/messages", {
+             headers: {
+                    "Authorization": "Bearer " + this.$store.state.jwtToken
+                }
+            }).then(res => {
+                this.$store.commit("setMessages", res.data.messages);
+            }).catch(error => {
+                alert(error.res.data.message)
+            });
+        },
+        sendMessage() {
+            api.post("/events/" + this.$route.params.id + "/messages", {
+                "text" : this.message
+            }, 
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.$store.state.jwtToken
+                }
+            }).then(res => {
+                this.getEventMessage();
+                this.message = "";
+                alert('Message envoyé');
+            }).catch(error => {
+                alert(error.res.data.message)
+            });
+        },
         getEvent() {
             api.get("/events/" + this.$route.params.id + "?token=" + this.$route.query.token, {
                 headers: {
@@ -81,32 +120,41 @@ export default {
                     this.participants += " " + participant.firstname
                 });
 
+                if(this.participants === "") {
+                    this.participants = "Aucun participant pour le moment"
+                } 
 
                 // Affichage de la carte
                 api_adress.get("/search/?q=" + this.adress.replaceAll(" ", "+")).then(res => {
-                    // console.log(res.data.features[0].geometry.coordinates[0])
-                    let latitude = res.data.features[0].geometry.coordinates[1];
-                    let longitude = res.data.features[0].geometry.coordinates[0];
-                    console.log(latitude, longitude);
-                    let map = L.map("map").setView([latitude, longitude], 15);
-                
-                    let openStreetMapLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                        attribution: '© OpenStreetMap contributors',
-                        maxZoom: 100,
-                        tileSize: 512,
-                        zoomOffset: -1
+                    console.log(res.data)
+                    if(res.data.features.length > 1 || res.data.features.length == 0) {
+                        alert("L'adresse saisi est incorrect, veuillez la modifier pour l'afficher correctement sur la map");
+                        this.hideMap = true;
+                    }
+                    else {
+                        let latitude = res.data.features[0].geometry.coordinates[1];
+                        let longitude = res.data.features[0].geometry.coordinates[0];
+                        console.log(latitude, longitude);
+                        let map = L.map("map").setView([latitude, longitude], 15);
+                    
+                        let openStreetMapLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                            attribution: '© OpenStreetMap contributors',
+                            maxZoom: 100,
+                            tileSize: 512,
+                            zoomOffset: -1
+                            });
+
+                        let DefaultIcon = L.icon({
+                            iconUrl: icon,
+                            iconSize:     [50, 95], // size of the icon
+                            iconAnchor: [25,95]
                         });
+                        L.Marker.prototype.options.icon = DefaultIcon;
 
-                    let DefaultIcon = L.icon({
-                        iconUrl: icon,
-                        iconSize:     [50, 95], // size of the icon
-                        iconAnchor: [25,95]
-                    });
-                    L.Marker.prototype.options.icon = DefaultIcon;
-
-                    let marker = L.marker([latitude, longitude]).addTo(map);
-                    // marker.bindPopup("<b>Lieu de l'évènement</b>").openPopup();
-                    map.addLayer(openStreetMapLayer);
+                        let marker = L.marker([latitude, longitude]).addTo(map);
+                        // marker.bindPopup("<b>Lieu de l'évènement</b>").openPopup();
+                        map.addLayer(openStreetMapLayer);
+                    }
                 })
 
             }).catch(error => {

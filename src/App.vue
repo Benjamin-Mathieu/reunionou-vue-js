@@ -24,7 +24,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: Roboto, Geneva, Tahoma, sans-serif;
-  background-color: whitesmoke; height: 100vh;
+  height: 100vh;
   .hide {
     display: none;
   }
