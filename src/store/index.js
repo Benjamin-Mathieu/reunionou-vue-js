@@ -12,12 +12,17 @@ export default new Vuex.Store({
   plugins : [vuexLocal.plugin],
   state: {
     events: [],
+    messages: [],
     jwtToken: false
   },
   mutations: {
     setEvents(state,events)
     {
       state.events= events;
+    },
+    setMessages(state, messages)
+    {
+      state.messages = messages
     },
     setToken(state, jwtToken)
     {

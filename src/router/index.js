@@ -25,7 +25,7 @@ const routes = [
   {
     path: '/event/:id',
     name: "Event",
-    component: () => import('../components/DetailsEvent.vue')
+    component: () => import('../views/DetailsEvent.vue')
   },
   {
     path: '/profil',
