@@ -3,8 +3,17 @@
         <h3 class="title is-3">Évènements publics</h3>
         <section class="public-events card">
             <div class="card-content columns is-mobile is-multiline is-centered">
-                <div v-for="event in $store.state.events">
-                <Event :event="event"/>
+                <div v-for="event in $store.state.events" :key="event.id">
+                    <Event :event="event"/>  
+                </div>
+            </div>
+        </section>
+
+        <h3 class="title is-3">Privés</h3>
+        <section class="public-events card">
+            <div class="card-content columns is-mobile is-multiline is-centered">
+                <div v-for="event in $store.state.privateEvents" :key="event.id">
+                    <Event :event="event"/>  
                 </div>
             </div>
         </section>
@@ -23,8 +32,13 @@ export default {
         CreateEvent
     },
     mounted() {
-      this.getEvents();
-      this.$bus.$on('getEvents', this.getEvents);
+        this.getEvents();
+        this.$bus.$on('getEvents', this.getEvents);
+
+        this.getPrivateEvents();
+        this.$bus.$on('getPrivateEvents', this.getPrivateEvents);
+
+        console.log(this.$store.state.privateEvents);
     },
     methods: {
       getEvents() {
@@ -33,7 +47,19 @@ export default {
             }).catch(error => {
                 alert(error.response.data.message)
             })
-      }
+      },
+      getPrivateEvents() {
+        api.get("/privateEvents", {
+            headers: {
+                Authorization: "Bearer" + this.$store.state.jwtToken
+            }
+        })
+        .then(response => {
+                this.$store.commit("setPrivateEvents", response.data.events);
+            }).catch(error => {
+                alert(error.response.data.message)
+            })
+      },
     }
 }
 </script>

@@ -5,18 +5,23 @@
                 <router-link to="/"><h2 class="title is-2">Reunionou</h2></router-link>
             </a>
             <div class="links">
-                <div class="navbar-brand">
-                    <img src="../assets/account_circle-white-24dp.svg" alt="icons" style="width:40px; height: 40px">
+                <router-link to="/profil">
+                    <div class="navbar-brand">
+                        <img src="../assets/account_circle-white-24dp.svg" alt="icons" style="width:40px; height: 40px">
                         <a class="navbar-item">
-                    <router-link to="/profil">Profil</router-link>
-                </a>
-                </div>
-                <div class="navbar-brand">
-                    <img src="../assets/celebration-white-24dp.svg" alt="icons" style="width:40px; height: 40px">
-                    <a class="navbar-item">
-                        <router-link to="/events">Evènements</router-link>
-                    </a>
-                </div>
+                            <span>Profil</span>
+                        </a>
+                    </div>
+                </router-link>
+                
+                <router-link to="/events">
+                    <div class="navbar-brand">
+                        <img src="../assets/celebration-white-24dp.svg" alt="icons" style="width:40px; height: 40px">
+                        <a class="navbar-item">
+                            <span>Evènements</span>
+                        </a>
+                    </div>
+                </router-link> 
             </div>
              
             <div class="auth">

@@ -12,6 +12,7 @@ export default new Vuex.Store({
   plugins : [vuexLocal.plugin],
   state: {
     events: [],
+    privateEvents: [],
     messages: [],
     jwtToken: false
   },
@@ -19,6 +20,10 @@ export default new Vuex.Store({
     setEvents(state,events)
     {
       state.events= events;
+    },
+    setPrivateEvents(state,privateEvents)
+    {
+      state.privateEvents= privateEvents;
     },
     setMessages(state, messages)
     {
