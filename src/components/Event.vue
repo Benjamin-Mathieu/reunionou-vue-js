@@ -4,7 +4,7 @@
                 <li><b>Titre:</b> {{event.event.title}} </li>
                 <li><b>Adresse:</b> {{event.event.adress}} </li>
                 <li><b>Createur:</b> {{event.event.creator.firstname}} </li>
-                <li><b>Date:</b> {{event.event.date}} </li>
+                <li><b>Date:</b> {{dateEvent}} </li>
                 <li><router-link :to="{name: 'Event', params:{id : event.event.id}, query: { token: event.event.token }}">Voir détails</router-link></li>
             </ul>
     </div>
@@ -13,8 +13,16 @@
 <script>
 export default {
     props: ['event'],
+    data() {
+        return {
+            dateEvent: ''
+        }
+    },
     mounted() {
         console.log(this.event);
+        let d = new Date(this.event.event.created_at);
+        let options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+        this.dateEvent = d.toLocaleDateString('fr-FR', options);
     }
     
 }
