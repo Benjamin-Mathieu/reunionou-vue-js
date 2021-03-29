@@ -80,6 +80,7 @@ export default {
         }
     },
     mounted() {
+        // Récupération des informations de l'évènement et des messages
         this.getEvent();
         this.$bus.$on('getEvent', this.getEvent);
         this.getEventMessage();
@@ -128,17 +129,19 @@ export default {
                 this.creator = response.data.event.creator.firstname
                 this.date = response.data.event.date
 
+                // Récupération et déchiffrage du JWT pour récupérer les informations de l'utilisateur connecté sur l'application
                 let jwt_token = this.$store.state.jwtToken;
                 let decoded = jwt_decode(jwt_token);
                 console.log(decoded.user);
 
                 
-                // Check si c'est le créateur de l'évènement et enlève les boutons de l'affichage
+                // Check si c'est le créateur de l'évènement et enlève les boutons de participation de l'affichage et affiche le bouton pour supprimé l'event
                 if(response.data.event.user_id == decoded.user.id) {
                     this.hideParticipateButtons = true
                     this.hideDeleteButton = false
                 }
 
+                // Parcours les participants de l'évènement et les ajoute à la data participants selon leur réponses à l'invitation
                 response.data.event.participants.forEach(participant => {
                     if(participant.pivot.present !== null) {
                         this.participants += " " + participant.firstname
@@ -149,16 +152,16 @@ export default {
                     this.participants = "Aucun participant pour le moment"
                 } 
 
-                // Affichage de la carte
+                // Appel de l'api data-gouv pour récupérer les coordonnées GPS à l'aide de l'adresse de l'évènement
                 api_adress.get("/search/?q=" + this.adress.replaceAll(" ", "+")).then(res => {
                     if(res.data.features.length > 1 || res.data.features.length == 0) {
                         alert("L'adresse saisi est incorrect, veuillez la modifier pour l'afficher correctement sur la map");
                         this.hideMap = true;
                     }
                     else {
+                        // Création de la map avec Leaflet
                         let latitude = res.data.features[0].geometry.coordinates[1];
                         let longitude = res.data.features[0].geometry.coordinates[0];
-                        console.log(latitude, longitude);
                         let map = L.map("map").setView([latitude, longitude], 15);
                     
                         let openStreetMapLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -180,7 +183,6 @@ export default {
                         map.addLayer(openStreetMapLayer);
                     }
                 })
-
             }).catch(error => {
                 alert(error.response.data.message)
             })
@@ -190,6 +192,7 @@ export default {
             let jwt_token = this.$store.state.jwtToken;
             let decoded = jwt_decode(jwt_token);
 
+            // Appel de l'API pour donné sa réponse à l'invitation d'un évènement, si response est à: true = participe, null = en attente, false = ne participe pas
             api.put("/events/" + this.$route.params.id + "/response", 
             {
                 "response": true
@@ -207,6 +210,7 @@ export default {
         },
 
         deleteEvent() {
+            // Appel de l'API pour supprimer un évènement après confirmation
             if(confirm("Voulez-vous supprimer l'évènement ?")) {
                 api.delete("/events/" + this.$route.params.id, 
                 {

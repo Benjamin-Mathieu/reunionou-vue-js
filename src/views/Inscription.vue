@@ -80,6 +80,7 @@ export default {
         createAccount() {
             let token = Buffer.from(this.email+':'+this.password+'', 'utf8').toString('base64');
 
+            // Vérification si les 2 inputs de vérification de mdp sont corrects et si c'est ok exécution de la requête pour crée un utilisateur
             if(this.password != this.confirm_password) {
                 this.$refs.password2.classList.add('is-danger');
                 this.$refs.password1.classList.add('is-danger');

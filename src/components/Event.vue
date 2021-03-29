@@ -1,9 +1,12 @@
 <template>
     <div class="event column">
             <ul :class="{myEvents: myEvents}">
+
+                <!-- Affichage du bouton pour pour permettre au créateur d'un évènement d'inviter d'autres utilisateurs via leur mail  -->
                 <div v-if="event.event.creator.id == user_id">
                     <button class="button" @click="showForm">Inviter</button>
-        
+
+                    <!-- Si le bouton Inviter est cliqué alors le formulaire pour rentré le mail s'affiche -->
                     <div v-if="show" id="invite-event">
                         <section>
                             <h3>Invitations</h3>
@@ -16,6 +19,7 @@
                     </div>
                 </div>
                 
+                <!-- Affichage des informations de l'évènement et redirection pour voir l'évènement en détail -->
                 <li><b>Titre:</b> {{event.event.title}} </li>
                 <li><b>Adresse:</b> {{event.event.adress}} </li>
                 <li><b>Createur:</b> {{event.event.creator.firstname}} </li>
@@ -42,6 +46,7 @@ export default {
     },
     mounted() {
         console.log(this.event);
+        // Formatage de la date pour l'affichage de la date de création de l'évènement
         let d = new Date(this.event.event.created_at);
         let options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
         this.dateEvent = d.toLocaleDateString('fr-FR', options);
@@ -50,6 +55,7 @@ export default {
         let decoded = jwt_decode(jwt_token);
         this.user_id = decoded.user.id;
 
+        // Permet de savoir quels évènements ont été crée par l'utilisateur
         if(this.event.event.creator.id == this.user_id) {
             this.myEvents = true;
         }
@@ -65,6 +71,7 @@ export default {
             let jwt_token = this.$store.state.jwtToken;
             console.log(this.event.event.id);
 
+            // Appel de l'API pour inviter un utilisateur à son évènement
             api.post("/events/" + this.event.event.id + "/participants", {
                 mail: this.mail
             }, {
@@ -73,7 +80,7 @@ export default {
                 }
             }).then(response => {
                 console.log(response);
-                alert("L'utilisateur "+ this.mail +"a été invité à votre évènement " + this.event.event.title);
+                alert("L'utilisateur " + this.mail + "a été invité à votre évènement " + this.event.event.title);
                 this.show = false;
             }).catch(error => {
                 alert(error.response.data.message)

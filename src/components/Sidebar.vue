@@ -4,6 +4,8 @@
             <a>
                 <router-link to="/"><h2 class="title is-2">Reunionou</h2></router-link>
             </a>
+
+            <!-- Liens qui redirige sur le profil et les évènements -->
             <div class="links">
                 <router-link to="/profil">
                     <div class="navbar-brand">
@@ -24,6 +26,7 @@
                 </router-link> 
             </div>
              
+             <!-- Affichage des boutons de connexion et déconnexion selon l'état du JWT dans le store -->
             <div class="auth">
                 <button v-if="this.$store.state.jwtToken === false" class="button is-success" >
                 <router-link to="/" >

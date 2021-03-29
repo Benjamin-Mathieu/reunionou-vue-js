@@ -6,6 +6,7 @@
         <div v-if="show" id="create-event">
             <section>
                 <h3>Ajout évènement</h3>
+                <!-- Formulaire pour crée l'évènement (titre, description, adresse, date, public/privé) -->
                 <form @submit.prevent="createEvent">
                         <div><input v-model="title" required type="text" placeholder="Titre"></div>
                         <div><input v-model="description" required type="text" placeholder="Description"></div>
@@ -55,6 +56,7 @@ export default {
         createEvent() {
             let jwt_token = this.$store.state.jwtToken;
 
+            // Appel de l'API pour crée l'évènement et récupère les données (title, description, date, adress) tapées par l'utilisateur
             api.post("/events", {
                 title: this.title,
                 description: this.description,
