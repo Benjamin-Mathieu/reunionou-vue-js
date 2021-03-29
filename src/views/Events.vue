@@ -4,7 +4,7 @@
         <section class="public-events card">
             <div class="card-content columns is-mobile is-multiline is-centered">
                 <div v-for="event in $store.state.events" :key="event.id">
-                    <Event v-if="event.event.public == 1" :event="event"/>  
+                    <Event :event="event"/>  
                 </div>
             </div>
         </section>
@@ -13,7 +13,7 @@
         <section class="public-events card">
             <div class="card-content columns is-mobile is-multiline is-centered">
                 <div v-for="event in $store.state.privateEvents" :key="event.id">
-                    <Event v-if="event.event.public == 0" :event="event"/>  
+                    <Event :event="event"/>  
                 </div>
             </div>
         </section>

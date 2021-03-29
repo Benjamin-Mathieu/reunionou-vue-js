@@ -9,7 +9,9 @@
             Date: {{date}}
             Participants: {{participants}}
         </div>
-            
+        
+        <UpdateEvent/>
+          
         <div class="buttons">
             <button @click="participateEvent" class="button is-success" v-bind:class="{ hide: hideParticipateButtons }" ref="participate">
                 <span>Je participe</span>
@@ -21,9 +23,18 @@
                 <span>Supprimer l'event</span>
             </button>
         </div>
-        <div v-for="message in $store.state.messages">
-                <Message :message="message"/>
+        
+        <div v-if="$store.state.messages.length <= 0">
+            <article class="message is-danger">
+                <div class="message-body">
+                    <p>Aucun message de poster pour le moment...</p>
+                </div>
+            </article>
         </div>
+        <div v-else v-for="message in $store.state.messages" :key="message.id">
+            <Message :message="message"/>
+        </div>
+
         <form @submit.prevent="sendMessage">
             <input class="input" v-model="message" required type="text" placeholder="Tapez votre message">
             <button class="button is-info">Envoyer</button>
@@ -37,10 +48,12 @@ import "leaflet/dist/leaflet.css";
 import icon from '../assets/logo.png';
 import jwt_decode from "jwt-decode";
 import Message from '@/components/Message.vue';
+import UpdateEvent from '@/components/UpdateEvent.vue';
 
 export default {
     components: {
-        Message
+        Message,
+        UpdateEvent
     },
     data() {
         return {
