@@ -25,7 +25,7 @@
                     <span>Connexion</span>
                 </router-link>
                 </button>
-                <button v-else @click="disconnectUser" :class="{ hide: hide }" class="button" id="disconnectButton">
+                <button v-else @click="disconnectUser" :class="{ hide: hide }" class="button is-danger" id="disconnectButton">
                     <span>Se déconnecter</span>
                 </button>
             </div>
