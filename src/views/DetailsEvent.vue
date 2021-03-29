@@ -24,6 +24,10 @@
         <div v-for="message in $store.state.messages">
                 <Message :message="message"/>
         </div>
+        <form @submit.prevent="sendMessage">
+            <input class="input" v-model="message" required type="text" placeholder="Tapez votre message">
+            <button class="button is-info">Envoyer</button>
+        </form>
     </section>
 </template>
 
@@ -48,7 +52,8 @@ export default {
             participants: '',
             hideParticipateButtons: false,
             hideDeleteButton: true,
-            hideMap: false
+            hideMap: false,
+            message: ''
         }
     },
     mounted() {
@@ -56,6 +61,8 @@ export default {
         this.$bus.$on('getEvent', this.getEvent);
         this.getEventMessage();
         this.$bus.$on('getEventMessage', this.getEventMessage);
+
+        console.log(this.$store.state.messages);
     },
     methods: {
         getEventMessage() {
@@ -64,10 +71,26 @@ export default {
                     "Authorization": "Bearer " + this.$store.state.jwtToken
                 }
             }).then(res => {
-                this.$store.commit("setMessages", res.data);
+                this.$store.commit("setMessages", res.data.messages);
             }).catch(error => {
                 alert(error.res.data.message)
-            })
+            });
+        },
+        sendMessage() {
+            api.post("/events/" + this.$route.params.id + "/messages", {
+                "text" : this.message
+            }, 
+            {
+                headers: {
+                    "Authorization": "Bearer " + this.$store.state.jwtToken
+                }
+            }).then(res => {
+                this.getEventMessage();
+                this.message = "";
+                alert('Message envoyé');
+            }).catch(error => {
+                alert(error.res.data.message)
+            });
         },
         getEvent() {
             api.get("/events/" + this.$route.params.id + "?token=" + this.$route.query.token, {

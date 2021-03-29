@@ -1,29 +1,54 @@
 <template>
     <article class="message is-link">
         <div class="message-header">
-            <p>{{message.user_id}}</p>
+            <p>{{message.user.firstname}}</p>
+            <button @click="deleteMessage" class="delete" aria-label="delete" v-bind:class="{ hide: hideDeleteButton }"></button>
         </div>
         <div class="message-body">
-            <p>{{message.text}}</p>
+            <p>{{message.message.text}}</p>
             <p style="text-align: right; font-size: 0.8em">{{dateMsg}}</p>
         </div>
     </article>
 </template>
 
 <script>
+import jwt_decode from "jwt-decode";
+
 export default {
     props: ['message'],
     data() {
         return {
-            dateMsg : ''
+            dateMsg : '',
+            hideDeleteButton: false
         }
     },
     mounted() {
-        let d = new Date(this.message.created_at);
+        let d = new Date(this.message.message.created_at);
         let options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
         this.dateMsg = d.toLocaleDateString('fr-FR', options);
 
-        console.log(this.$store.state.messages);
+        let decoded = jwt_decode(this.$store.state.jwtToken);
+
+        if(this.message.message.user_id != decoded.user.id ) {
+            this.hideDeleteButton = true;
+        }
+    },
+    methods: {
+        deleteMessage() {
+            if(confirm("Supprimer le message ?")) {
+                api.delete("/events/" + this.$route.params.id + "/messages/" + this.message.message.id,
+                {
+                    headers: {
+                            "Authorization": "Bearer " + this.$store.state.jwtToken
+                        }
+                }).then(res => {
+                    alert('Message supprimé');
+                }).catch(error => {
+                    alert(error.res.data.message)
+                });
+            }
+            
+        }
     }
 }
 </script>
