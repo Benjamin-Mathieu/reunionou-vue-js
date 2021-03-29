@@ -76,7 +76,7 @@ export default {
             .auth {
                 padding: 1em;
             }
-            h1 {
+            h2 {
             color: white;
             font-family: 'Roboto';
             font-size: 50px;

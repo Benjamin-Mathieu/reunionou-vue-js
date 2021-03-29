@@ -2,12 +2,14 @@
     <section class="detail-event">
         <div id="map" v-bind:class="{ hide: hideMap }"></div>
         <div class="info-event">
-            Titre: {{title}}
-            Description: {{description}}
-            Adresse: {{adress}}
-            Créateur: {{creator}}
-            Date: {{date}}
-            Participants: {{participants}}
+            <ul>
+                <li><b>Titre: </b>{{title}}</li>
+                <li><b>Description: </b>{{description}}</li>
+                <li><b>Adresse: </b>{{adress}}</li>
+                <li><b>Créateur: </b>{{creator}}</li>
+                <li><b>Date: </b>{{date}}</li>
+                <li><b>Participants: </b>{{participants}}</li>
+            </ul>
         </div>
             
         <div class="buttons">
@@ -207,12 +209,22 @@ export default {
 <style lang="scss" scoped>
 
     .detail-event {
+        
         #map {
             height: 400px; width: 80%;
-            margin: auto;
+            margin: 1em auto 2em;
         }
         .hide {
             display: none
+        }
+        .info-event{
+            text-align: center;
+            margin-top: 1em;
+        }
+        .buttons{
+            display: block;
+            text-align: center;
+            margin-top: 1em;
         }
     }
     

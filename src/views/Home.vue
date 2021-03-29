@@ -43,8 +43,8 @@ import jwt_decode from "jwt-decode";
 export default {
   data() {
     return {
-      email : '',
-      password : '',
+      email : 'test@test.fr',
+      password : 'test',
       isClick : false
     }
   },

@@ -18,6 +18,7 @@ export default {
 * {
   box-sizing: border-box;
   margin: 0; padding: 0;
+  
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -25,9 +26,16 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   font-family: Roboto, Geneva, Tahoma, sans-serif;
   height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
   .hide {
     display: none;
   }
+  .main{
+    grid-column-start: 2;
+    grid-column-end: 8;
+  }
+
 }
 
 </style>

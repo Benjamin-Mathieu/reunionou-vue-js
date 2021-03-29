@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3 class="title is-3">Evènements publics</h3>
+        <h3 class="title is-3">Évènements publics</h3>
         <section class="public-events card">
             <div class="card-content columns is-mobile is-multiline is-centered">
                 <div v-for="event in $store.state.events">
@@ -8,7 +8,6 @@
                 </div>
             </div>
         </section>
-
         <CreateEvent/>
     </div>
 </template>
@@ -40,6 +39,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    h3{
+        margin-top: 1em;
+    }
     .public-events{
         background-color: white;
         padding: 1em;

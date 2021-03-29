@@ -1,10 +1,5 @@
 <template>
         <div class="card">
-            <div class="card-image">
-                <figure class="image is-4by3">
-                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-                </figure>
-            </div>
             <div class="card-content">
                 <div class="media">
                     <div class="media-left">
@@ -17,8 +12,8 @@
                         <p class="subtitle is-6"><a :href="'mailto:'+mail">{{mail}}</a></p>
                     </div>
                 </div>
-                <button class="button">Modifier le mot de passe</button>
-                <button class="button">Supprimer le profil</button>
+                <router-link to="/newMDP"><button class="button is-info">Modifier le mot de passe</button></router-link>
+                <button class="button is-danger">Supprimer le profil</button>
             </div>
         </div>
 </template>
@@ -54,6 +49,10 @@ export default {
 
 <style lang="scss" scoped>
     .card {
-        margin: auto; width:50%;
+        margin: auto; 
+        width:auto;
+        .button{
+            margin-right: 1em;
+        }
     }
 </style>
