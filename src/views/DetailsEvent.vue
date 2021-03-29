@@ -1,28 +1,38 @@
 <template>
     <section class="detail-event">
         <div id="map" v-bind:class="{ hide: hideMap }"></div>
-        <div class="info-event">
-            Titre: {{title}}
-            Description: {{description}}
-            Adresse: {{adress}}
-            Créateur: {{creator}}
-            Date: {{date}}
-            Participants: {{participants}}
+        <div class="box">
+            <article class="media">
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong>{{title}}</strong> <small>{{creator}}</small> 
+                            <br>
+                            <small>{{adress}}</small>
+                            <br>
+                            Description: {{description}}
+                            <br>
+                            Participants: {{participants}}
+                        </p>
+                    </div>
+                    <nav class="level is-mobile">
+                        <div class="level-left">
+                            <button @click="participateEvent" class="button is-success level-item" v-bind:class="{ hide: hideParticipateButtons }" ref="participate">
+                                <span>Je participe</span>
+                            </button>
+                             <button class="button is-danger" :class="{ hide: hideParticipateButtons }" ref="notparticipate">
+                                <span>Je ne participe pas</span>
+                            </button>
+                            <button @click="deleteEvent" class="button is-danger" v-bind:class="{ hide: hideDeleteButton }">
+                                <span>Supprimer l'event</span>
+                            </button>
+                        </div>
+                    </nav>
+                </div>
+            </article>
         </div>
         
         <UpdateEvent/>
-          
-        <div class="buttons">
-            <button @click="participateEvent" class="button is-success" v-bind:class="{ hide: hideParticipateButtons }" ref="participate">
-                <span>Je participe</span>
-            </button>
-            <button class="button is-danger" :class="{ hide: hideParticipateButtons }" ref="notparticipate">
-                <span>Je ne participe pas</span>
-            </button>
-            <button @click="deleteEvent" class="button is-danger" v-bind:class="{ hide: hideDeleteButton }">
-                <span>Supprimer l'event</span>
-            </button>
-        </div>
         
         <div v-if="$store.state.messages.length <= 0">
             <article class="message is-danger">
@@ -119,8 +129,8 @@ export default {
                 this.date = response.data.event.date
 
                 let jwt_token = this.$store.state.jwtToken;
-                        let decoded = jwt_decode(jwt_token);
-                        console.log(decoded.user);
+                let decoded = jwt_decode(jwt_token);
+                console.log(decoded.user);
 
                 
                 // Check si c'est le créateur de l'évènement et enlève les boutons de l'affichage
@@ -130,7 +140,9 @@ export default {
                 }
 
                 response.data.event.participants.forEach(participant => {
-                    this.participants += " " + participant.firstname
+                    if(participant.pivot.present !== null) {
+                        this.participants += " " + participant.firstname
+                    }
                 });
 
                 if(this.participants === "") {
@@ -139,7 +151,6 @@ export default {
 
                 // Affichage de la carte
                 api_adress.get("/search/?q=" + this.adress.replaceAll(" ", "+")).then(res => {
-                    console.log(res.data)
                     if(res.data.features.length > 1 || res.data.features.length == 0) {
                         alert("L'adresse saisi est incorrect, veuillez la modifier pour l'afficher correctement sur la map");
                         this.hideMap = true;
@@ -175,24 +186,21 @@ export default {
             })
         },
 
-
-
         participateEvent() {
             let jwt_token = this.$store.state.jwtToken;
             let decoded = jwt_decode(jwt_token);
-            console.log(decoded.user);
 
-            api.post("/events/" + this.$route.params.id + "/participants", 
+            api.put("/events/" + this.$route.params.id + "/response", 
             {
-                "mail": decoded.user.mail
+                "response": true
             },
             {
                 headers: {
                     "Authorization": "Bearer " + this.$store.state.jwtToken
                 }
             }).then(response => {
-                alert('User added');
-                this.disabled = true;
+                alert('Vous participez !');
+                console.log(response);
             }).catch(error => {
                 alert(error.response.data.message);
             });
