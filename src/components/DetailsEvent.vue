@@ -160,7 +160,8 @@ export default {
 
     .detail-event {
         #map {
-            height: 400px; width: 100%;
+            height: 400px; width: 80%;
+            margin: auto;
         }
         .hide {
             display: none

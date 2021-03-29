@@ -2,29 +2,33 @@
     <div class="sidebar">
         <nav class="navbar" role="navigation" aria-label="dropdown navigation">
             <a>
-                <router-link to="/"><h1>Reunionou</h1></router-link>
+                <router-link to="/"><h2 class="title is-2">Reunionou</h2></router-link>
             </a>
-             <div class="navbar-brand">
-                <img src="../assets/account_circle-white-24dp.svg" alt="icons" style="width:40px; height: 40px">
-                <a class="navbar-item">
-                <router-link to="/profil">Profil</router-link>
+            <div class="links">
+                <div class="navbar-brand">
+                    <img src="../assets/account_circle-white-24dp.svg" alt="icons" style="width:40px; height: 40px">
+                        <a class="navbar-item">
+                    <router-link to="/profil">Profil</router-link>
                 </a>
+                </div>
+                <div class="navbar-brand">
+                    <img src="../assets/celebration-white-24dp.svg" alt="icons" style="width:40px; height: 40px">
+                    <a class="navbar-item">
+                        <router-link to="/events">Evènements</router-link>
+                    </a>
+                </div>
             </div>
-            <div class="navbar-brand">
-                <img src="../assets/celebration-white-24dp.svg" alt="icons" style="width:40px; height: 40px">
-                <a class="navbar-item">
-                <router-link to="/events">Evènements</router-link>
-                </a>
+             
+            <div class="auth">
+                <button v-if="this.$store.state.jwtToken === false" class="button is-success" >
+                <router-link to="/" >
+                    <span>Connexion</span>
+                </router-link>
+                </button>
+                <button v-else @click="disconnectUser" :class="{ hide: hide }" class="button" id="disconnectButton">
+                    <span>Se déconnecter</span>
+                </button>
             </div>
-            
-            <button v-if="this.$store.state.jwtToken === false" class="button is-success" >
-            <router-link to="/" >
-                <span>Connexion</span>
-            </router-link>
-            </button>
-            <button v-else @click="disconnectUser" :class="{ hide: hide }" class="button" id="disconnectButton">
-                <span>Se déconnecter</span>
-            </button>
         </nav>
     </div>
 </template>
@@ -62,22 +66,28 @@ export default {
 
         .navbar{
             height: 100%;
+            display: flex; flex-direction: column; justify-content: space-between;
             position: fixed;
-            display: block;
             background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(76,45,253,1) 100%);
             overflow-x: hidden;
-        }
-        h1 {
+            .links{ 
+                margin-top: -15em;
+            }
+            .auth {
+                padding: 1em;
+            }
+            h1 {
             color: white;
             font-family: 'Roboto';
             font-size: 50px;
-        }
-        a{
-            color: white;
-            font-size: 20px;
-        }
-        .navbar-brand:hover {
-            background-color: rgba(34,193,195,0.8);
+            }
+            a{
+                color: white;
+                font-size: 20px;
+            }
+            .navbar-brand:hover {
+                background-color: rgba(34,193,195,0.8);
+            }
         }
     }
 </style>

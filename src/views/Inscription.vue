@@ -6,7 +6,7 @@
                     <div class="field">
                         <label class="label">Nom</label>
                         <div class="control">
-                        <input v-model="name" class="input" type="text">
+                        <input v-model="name" class="input is-focused" type="text">
                         </div>
                     </div>
                 </div>
