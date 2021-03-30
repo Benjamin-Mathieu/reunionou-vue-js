@@ -170,9 +170,9 @@ export default {
                         });
                     }
                     if(participant.pivot.present == false) {
-                        this.notparticipate.push(participant.firstname); // push chaque participant dans l'array des participants
+                        this.notparticipate.push(participant.firstname); // push chaque non participant dans l'array des notparticipate
 
-                        // Vérification si l'array participants contient des prénoms déjà présent dans l'array pending, si oui le retire de l'array des personnes en attente de réponse
+                        // Vérification si l'array notparticipate contient des prénoms déjà présent dans l'array pending, si oui le retire de l'array des personnes en attente de réponse
                         this.notparticipate.forEach(participant => {
                             if(this.pending.includes(participant)) {
                                 const index = this.pending.indexOf(participant);

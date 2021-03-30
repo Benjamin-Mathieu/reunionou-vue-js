@@ -8,8 +8,8 @@
                 <h3>Ajout évènement</h3>
                 <!-- Formulaire pour crée l'évènement (titre, description, adresse, date, public/privé) -->
                 <form @submit.prevent="createEvent">
-                        <input class="input" v-model="title" required type="text" placeholder="Titre" minlength="5">
-                        <input class="input" v-model="description" required type="text" placeholder="Description" maxlength="300">
+                        <input class="input" v-model="title" required type="text" placeholder="Titre" minlength="4" maxlength="80">
+                        <input class="input" v-model="description" required type="text" placeholder="Description" minlength="0" maxlength="200">
                         <input class="input" v-model="adress" required type="text" placeholder="Adresse" ref="adress">
                         <input class="input" v-model="date" required type="date">
                         <input class="input" v-model="time" required type="time">

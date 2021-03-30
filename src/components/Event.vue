@@ -112,7 +112,7 @@ export default {
 <style lang="scss" scoped>
 
     .myEvents {
-        background-color: rgba(0, 0, 0, 0.6);
+        background-color: crimson;
         color: whitesmoke;
     }
     

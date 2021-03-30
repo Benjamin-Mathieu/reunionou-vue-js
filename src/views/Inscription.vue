@@ -45,7 +45,7 @@
                         </p>
                         <p class="control has-icons-left"></p>
                     </div>
-                        <p class="help is-danger">Password invalid</p>
+                    <!-- <p class="help is-danger">Password invalid</p> -->
                 </div>
                 <div class="column">
                     <div class="field">
@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="control">
-                <button class="button is-link">S'inscrire</button>
+                <button class="button is-link" ref="signUpButton">S'inscrire</button>
             </div>   
         </form>
     </div>
@@ -79,12 +79,12 @@ export default {
     methods: {
         createAccount() {
             let token = Buffer.from(this.email+':'+this.password+'', 'utf8').toString('base64');
-
+            
+            this.$refs.signUpButton.classList.add("is-loading");
             // Vérification si les 2 inputs de vérification de mdp sont corrects et si c'est ok exécution de la requête pour crée un utilisateur
             if(this.password != this.confirm_password) {
                 this.$refs.password2.classList.add('is-danger');
                 this.$refs.password1.classList.add('is-danger');
-                console.log('wrong passwords')
             } else {
                 api.post("/signUp", {
                     name : this.name,
@@ -96,11 +96,10 @@ export default {
                     'Authorization' : 'Basic ' + token,
                 }
                 }).then(response => {
-                    alert("Le compte a été crée")
-                    console.log(response.data)
-                    this.$router.push("/events")
+                    console.log(response.data);
+                    this.$router.push("/");
                 }).catch(error => {
-                    alert(error.response.data.message)
+                    alert(error.response.data.message);
                 })
             }
         }

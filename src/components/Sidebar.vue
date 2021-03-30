@@ -79,7 +79,6 @@ export default {
 
             .logo {
                 width: 140px; height: 160px;
-                
             }
             .links{ 
                 margin-top: -15em;
