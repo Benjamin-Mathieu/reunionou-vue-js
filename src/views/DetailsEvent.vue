@@ -28,7 +28,7 @@
                                 <span>Je ne participe pas</span>
                             </button>
                             <UpdateEvent  v-bind:class="{ hide: hideCreatorButtons }" />
-                            <button @click="deleteEvent" class="button is-small is-danger is-outlined" v-bind:class="{ hide: hideCreatorButtons }">
+                            <button @click="deleteEvent" class="button is-small is-danger is-outlined" v-bind:class="{ hide: hideCreatorButtons }" ref="deleteEventButton">
                                 <span>Supprimer</span>
                                 <span class="icon is-small">
                                      <img src="../assets/clear-black-24dp.svg" alt="delete-icon">
@@ -247,6 +247,7 @@ export default {
         },
 
         deleteEvent() {
+            this.$refs.deleteEventButton.classList.add("is-loading");
             // Appel de l'API pour supprimer un évènement après confirmation
             if(confirm("Voulez-vous supprimer l'évènement ?")) {
                 api.delete("/events/" + this.$route.params.id, 

@@ -12,8 +12,8 @@
                         <input class="input" v-model="description" required type="text" placeholder="Description" maxlength="300">
                         <input class="input" v-model="adress" required type="text" placeholder="Adresse" ref="adress">
                         <input class="input" v-model="date" required type="date">
-                        <!-- <div><input v-model="time" required type="time"></div> -->
-                        <label for="public">Public</label>
+                        <input class="input" v-model="time" required type="time">
+                        <label for="public">Publique</label>
                         <input class="checkbox" v-model="checkbox_public" type="checkbox" id="public">
                         <div>
                             <button class="button is-link" ref="createEvent">Créer un évènement</button>
@@ -55,6 +55,7 @@ export default {
         createEvent() {
             let jwt_token = this.$store.state.jwtToken;
             this.$refs.createEvent.classList.add("is-loading");
+
             // Vérification de la date choisi pour l'évènement
             let selectedDate = new Date(this.date);
             let now = new Date();
@@ -62,12 +63,14 @@ export default {
                     alert("La date choisi doit être supérieur à la date d'aujourd'hui !");
                     return;
                 }
+            
+            let dateFormated = this.date + " " + this.time;
 
             // Appel de l'API pour crée l'évènement et récupère les données (title, description, date, adress) tapées par l'utilisateur
             api.post("/events", {
                 title: this.title,
                 description: this.description,
-                date: this.date,
+                date: dateFormated,
                 adress: this.adress,
                 public: this.checkbox_public,
                 main_event: 1

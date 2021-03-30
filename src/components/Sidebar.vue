@@ -78,7 +78,7 @@ export default {
             overflow-x: hidden;
 
             .logo {
-                width: 80%; height: 20%;
+                width: 140px; height: 160px;
                 
             }
             .links{ 
