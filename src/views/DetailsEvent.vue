@@ -12,7 +12,11 @@
                             <br>
                             Description: {{description}}
                             <br>
-                            Participants: {{participants}}
+                            Participe: {{participants}}
+                            <br>
+                            Ne participe pas: {{notparticipate}}
+                            <br>
+                            En attente de réponse: {{pending}}
                         </p>
                     </div>
                     <nav class="level is-mobile">
@@ -73,6 +77,8 @@ export default {
             creator: '',
             date: '',
             participants: '',
+            notparticipate: '',
+            pending: '',
             hideParticipateButtons: false,
             hideDeleteButton: true,
             hideMap: false,
@@ -117,6 +123,11 @@ export default {
             });
         },
         getEvent() {
+            // Récupération et déchiffrage du JWT pour récupérer les informations de l'utilisateur connecté sur l'application
+            let jwt_token = this.$store.state.jwtToken;
+            let decoded = jwt_decode(jwt_token);
+            console.log(decoded.user);
+
             api.get("/events/" + this.$route.params.id + "?token=" + this.$route.query.token, {
                 headers: {
                     "Authorization": "Bearer " + this.$store.state.jwtToken
@@ -128,12 +139,6 @@ export default {
                 this.adress = response.data.event.adress
                 this.creator = response.data.event.creator.firstname
                 this.date = response.data.event.date
-
-                // Récupération et déchiffrage du JWT pour récupérer les informations de l'utilisateur connecté sur l'application
-                let jwt_token = this.$store.state.jwtToken;
-                let decoded = jwt_decode(jwt_token);
-                console.log(decoded.user);
-
                 
                 // Check si c'est le créateur de l'évènement et enlève les boutons de participation de l'affichage et affiche le bouton pour supprimé l'event
                 if(response.data.event.user_id == decoded.user.id) {
@@ -143,14 +148,28 @@ export default {
 
                 // Parcours les participants de l'évènement et les ajoute à la data participants selon leur réponses à l'invitation
                 response.data.event.participants.forEach(participant => {
-                    if(participant.pivot.present !== null) {
-                        this.participants += " " + participant.firstname
+                    switch(participant.pivot.present) {
+                        case null:
+                            this.pending += " " + participant.firstname;
+                            break;
+                        case true:
+                            this.participants += " " + participant.firstname;
+                            break;
+                        case false:
+                            this.notparticipate += " " + participant.firstname;
+                            break;
+                        default:
+                            console.log("Aucune personne a répondu à l'évènement pour le moment")
                     }
+                    // if(participant.pivot.present !== null) {
+                    //     this.participants += " " + participant.firstname
+                    // }
                 });
 
-                if(this.participants === "") {
-                    this.participants = "Aucun participant pour le moment"
-                } 
+                if(this.participants === "" || this.notparticipate === "") {
+                    this.participants = "/";
+                    this.notparticipate = "/";
+                }
 
                 // Appel de l'api data-gouv pour récupérer les coordonnées GPS à l'aide de l'adresse de l'évènement
                 api_adress.get("/search/?q=" + this.adress.replaceAll(" ", "+")).then(res => {

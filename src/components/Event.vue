@@ -4,8 +4,8 @@
 
                 <!-- Affichage du bouton pour pour permettre au créateur d'un évènement d'inviter d'autres utilisateurs via leur mail  -->
                 <div v-if="event.event.creator.id == user_id">
-                    <button class="button" @click="showForm">Inviter</button>
-
+                    <img @click="showForm" class="invite-img" src="../assets/add-user.svg" alt="invite-icon">
+    
                     <!-- Si le bouton Inviter est cliqué alors le formulaire pour rentré le mail s'affiche -->
                     <div v-if="show" id="invite-event">
                         <section>
@@ -97,11 +97,22 @@ export default {
     }
     
     .event {
+        position: relative;
         ul {
             margin: 1em;
             padding: 1em;
             border-radius: 10px;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        .invite-img {
+            height: 40px; width: 40px;
+            position: absolute; top: 0; right: 6px;
+            opacity: 0.9;
+        }
+        .invite-img:hover {
+            cursor: pointer;
+            opacity: 1;
         }
     }
 

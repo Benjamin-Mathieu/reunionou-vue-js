@@ -63,7 +63,6 @@ export default {
                 date: this.date,
                 adress: this.adress,
                 public: this.checkbox_public,
-                user_id: 1,
                 main_event: 1
             }, {
                 headers: {
