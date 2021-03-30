@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- Bouton pour afficher le modal du formulaire pour éditer l'évènement -->
         <button class="button" @click="showForm" :class="{hide: hideCreateButton}">
             <span>Editer l'évènement</span>
         </button>
@@ -8,6 +9,8 @@
         <div v-if="show" class="update-event">
             <section>
                 <h3>Ajout évènement</h3>
+
+                <!-- Formulaire (titre, description, adresse, date, publique/privé) -->
                 <form @submit.prevent="updateEvent">
                         <div><input v-model="title" required type="text" placeholder="Titre"></div>
                         <div><input v-model="description" required type="text" placeholder="Description"></div>
@@ -42,6 +45,7 @@ export default {
         }
     },
     mounted() {
+        // Si l'utilisateur n'est pas connecté alors le bouton pour modifier un évènement et retiré de l'affichage
         if(this.$store.state.jwtToken) {
             this.hideCreateButton = false;
             console.log('test')

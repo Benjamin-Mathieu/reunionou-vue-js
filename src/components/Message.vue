@@ -23,12 +23,14 @@ export default {
         }
     },
     mounted() {
+        // Formatage de la date pour l'affichage
         let d = new Date(this.message.message.created_at);
         let options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
         this.dateMsg = d.toLocaleDateString('fr-FR', options);
 
         let decoded = jwt_decode(this.$store.state.jwtToken);
 
+        // Le bouton pour supprimer un message s'affiche seulement si user_id du message correspond bien à l'id de l'utilisateur connecté 
         if(this.message.message.user_id != decoded.user.id ) {
             this.hideDeleteButton = true;
         }

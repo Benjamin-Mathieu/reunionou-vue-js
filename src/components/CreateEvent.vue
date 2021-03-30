@@ -6,18 +6,19 @@
         <div v-if="show" id="create-event">
             <section>
                 <h3>Ajout évènement</h3>
+                <!-- Formulaire pour crée l'évènement (titre, description, adresse, date, public/privé) -->
                 <form @submit.prevent="createEvent">
-                        <div><input v-model="title" required type="text" placeholder="Titre"></div>
-                        <div><input v-model="description" required type="text" placeholder="Description"></div>
-                        <div><input v-model="adress" required type="text" placeholder="Adresse"></div>
-                        <div><input v-model="date" required type="date"></div>
+                        <input class="input" v-model="title" required type="text" placeholder="Titre" minlength="5">
+                        <input class="input" v-model="description" required type="text" placeholder="Description" maxlength="300">
+                        <input class="input" v-model="adress" required type="text" placeholder="Adresse" ref="adress">
+                        <input class="input" v-model="date" required type="date">
                         <!-- <div><input v-model="time" required type="time"></div> -->
+                        <label for="public">Public</label>
+                        <input class="checkbox" v-model="checkbox_public" type="checkbox" id="public">
                         <div>
-                            <label for="public">Public</label>
-                            <input v-model="checkbox_public" type="checkbox" id="public">
+                            <button class="button is-link" ref="createEvent">Créer un évènement</button>
+                            <button type="button" @click="maskForm" class="button is-light">Annuler</button>
                         </div>
-                        <button class="button is-link">Créer un évènement</button>
-                        <button type="button" @click="maskForm" class="button is-warning button-clear">Annuler</button>
                 </form>
             </section>
         </div>
@@ -54,14 +55,22 @@ export default {
         },
         createEvent() {
             let jwt_token = this.$store.state.jwtToken;
+            this.$refs.createEvent.classList.add("is-loading");
+            // Vérification de la date choisi pour l'évènement
+            let selectedDate = new Date(this.date);
+            let now = new Date();
+                if (selectedDate < now) {
+                    alert("La date choisi doit être supérieur à la date d'aujourd'hui !");
+                    return;
+                }
 
+            // Appel de l'API pour crée l'évènement et récupère les données (title, description, date, adress) tapées par l'utilisateur
             api.post("/events", {
                 title: this.title,
                 description: this.description,
                 date: this.date,
                 adress: this.adress,
                 public: this.checkbox_public,
-                user_id: 1,
                 main_event: 1
             }, {
                 headers: {
@@ -69,12 +78,14 @@ export default {
                 }
             }).then(response => {
                 alert("Event created");
-                console.log(response.data.token)
-                console.log(response.data.id)
-                this.$router.push("/event/" + response.data.id + '?token=' + response.data.token);
+                this.show = false;
                 console.log(response.data)
             }).catch(error => {
-                alert(error.response.data.message)
+                if(error.response.data.error == "No adress found") {
+                    alert("L'adresse saisi est incorrect ! Veuillez la saisir à nouveau");
+                    this.$refs.adress.classList.add("is-danger");
+                }
+                console.log(error.response.data.error);
             })
         }
     }
@@ -86,51 +97,23 @@ export default {
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(0,0,0,0.5);
-
-        section {
-        position: absolute;
-        left: 50%; 
-        top: 50%;
-        transform: translate(-50%, -50%);
-        background: whitesmoke;
-        padding: 1em;
-        border-radius: 1em;
-
-        h3 {
-            color:#363636;
-        }
-
-        .close {
-            position: absolute;
-            top: -1em;
-            right: -1em;
-            width: 3em;
-            height: 3em;
-            line-height: 3em;
-            margin: 0;
-            padding: 0;
-            border-radius: 50%;
-        }
-        .close:hover {
-            cursor: pointer;
-        }
-
-        form {
-        border: none;
         text-align: center;
 
-        div {
-            margin: .5em;
-
+        section {
+            position: absolute;
+            width: 50%;
+            left: 50%; 
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: whitesmoke;
+            padding: 1em;
+            border-radius: 1em;
             input {
-                padding: 0.3em;
-                margin: 0.3em;
-                border-top: none; border-left: none; border-right: none;
-                border-bottom: 1px solid #2750B8;
-                border-radius: .3em;
-                width: 100%;
+                margin: .3rem;
+            }
+            button {
+                margin: .7rem;
             }
         }
-    }}
     }
 </style>

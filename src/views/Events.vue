@@ -1,6 +1,11 @@
 <template>
     <div>
+<<<<<<< HEAD
         <h3 class="title is-3">Évènements publics</h3>
+=======
+        <!-- Affichage des évènements publiques -->
+        <h3 class="title is-3">Publiques</h3>
+>>>>>>> c6a16d747b9f842076e881e7fdf60cc9e8e3cb96
         <section class="public-events card">
             <div class="card-content columns is-mobile is-multiline is-centered">
                 <div v-for="event in $store.state.events" :key="event.id">
@@ -9,6 +14,7 @@
             </div>
         </section>
 
+        <!-- Affichage des évènements crée en privé ou en attente -->
         <h3 class="title is-3">Privés</h3>
         <section class="public-events card">
             <div class="card-content columns is-mobile is-multiline is-centered">
@@ -17,6 +23,11 @@
                 </div>
             </div>
         </section>
+<<<<<<< HEAD
+=======
+
+        <!-- Affichage du modal pour crée un event -->
+>>>>>>> c6a16d747b9f842076e881e7fdf60cc9e8e3cb96
         <CreateEvent/>
     </div>
 </template>
@@ -32,6 +43,7 @@ export default {
         CreateEvent
     },
     mounted() {
+        // Récupération des évènements publiques et privés
         this.getEvents();
         this.$bus.$on('getEvents', this.getEvents);
 
@@ -41,6 +53,8 @@ export default {
         console.log(this.$store.state.privateEvents);
     },
     methods: {
+        
+    //Appel à l'API pour stocker les données des évènements publiques et privés dans le store
       getEvents() {
         api.get("/events").then(response => {
                 this.$store.commit("setEvents", response.data.events);

@@ -12,8 +12,10 @@
                         <p class="subtitle is-6"><a :href="'mailto:'+mail">{{mail}}</a></p>
                     </div>
                 </div>
+
+                <!-- Boutons pour gérer son profil -->
                 <router-link to="/newMDP"><button class="button is-info">Modifier le mot de passe</button></router-link>
-                <button class="button is-danger">Supprimer le profil</button>
+                <button class="button">Supprimer le profil</button>
             </div>
         </div>
 </template>
@@ -30,11 +32,14 @@ export default {
         }
     },
     mounted() {
+
+        // Si le store ne contient pas le JWT de l'utilisateur alors il n'est pas connecté/inscrit et le renvoi sur le formulaire de connexion
         if(!this.$store.state.jwtToken) {
             alert('Vous devez être connecté pour voir votre profil !');
             this.$router.push("/");
         };
         
+        // Récupération et déchiffrage du JWT stocké dans le store pour récupéré et afficher les données (prénom, nom et mail) de son compte
         let jwt_token = this.$store.state.jwtToken;
         let decoded = jwt_decode(jwt_token);
         console.log(decoded.user);
