@@ -156,8 +156,12 @@ export default {
 
                 // Parcours les participants de l'évènement pour l'affichage des participants, non participants, en attente
                 response.data.event.participants.forEach(participant => {
+
+                    // stockage du prénom + nom du participant
+                    let theParticipant = participant.firstname + " " + participant.name;
+
                     if(participant.pivot.present == true) {
-                        this.participants.push(participant.firstname); // push chaque participant dans l'array des participants
+                        this.participants.push(theParticipant); // push chaque participant dans l'array des participants
 
                         // Vérification si l'array participants contient des prénoms déjà présent dans l'array pending, si oui le retire de l'array des personnes en attente de réponse
                         this.participants.forEach(participant => {
@@ -170,7 +174,7 @@ export default {
                         });
                     }
                     if(participant.pivot.present == false) {
-                        this.notparticipate.push(participant.firstname); // push chaque non participant dans l'array des notparticipate
+                        this.notparticipate.push(theParticipant); // push chaque non participant dans l'array des notparticipate
 
                         // Vérification si l'array notparticipate contient des prénoms déjà présent dans l'array pending, si oui le retire de l'array des personnes en attente de réponse
                         this.notparticipate.forEach(participant => {
@@ -189,7 +193,7 @@ export default {
                         });
                     } 
                     if(participant.pivot.present == null) {
-                        this.pending.push(participant.firstname);
+                        this.pending.push(theParticipant);
                         console.log(this.pending);
                     }
                 });
@@ -229,6 +233,13 @@ export default {
         },
 
         participateEvent(response) {
+            if(response == true) {
+                this.$refs.participate.classList.add("is-loading");
+            }
+            if(response == false){
+                this.$refs.notparticipate.classList.add("is-loading");
+            }
+
             // Appel de l'API pour donné sa réponse à l'invitation d'un évènement, si response est à: true = participe, null = en attente, false = ne participe pas
             api.put("/events/" + this.$route.params.id + "/response", 
             {

@@ -65,7 +65,6 @@ export default {
                 'Authorization' : 'Basic ' + token,
               }
             }).then(response => {
-                alert("Vous êtes bien connecté")
                 let jwt_token = response.data;
                 let decoded = jwt_decode(jwt_token);
                 console.log(decoded);

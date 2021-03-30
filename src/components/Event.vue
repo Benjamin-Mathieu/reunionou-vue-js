@@ -12,7 +12,7 @@
                             <form @submit.prevent="inviteEvent">
                                     <input class="input" v-model="mail" required type="email" placeholder="Rentrer l'adresse mail de la personne à inviter...">
                                     <div class="buttons">
-                                        <button class="button is-link">Inviter</button>
+                                        <button class="button is-link" ref="inviteButton">Inviter</button>
                                         <button type="button" @click="maskForm" class="button is-warning button-clear">Annuler</button>
                                     </div>
                             </form>
@@ -89,7 +89,7 @@ export default {
         },
         inviteEvent() {
             let jwt_token = this.$store.state.jwtToken;
-            console.log(this.event.event.id);
+            this.$refs.inviteButton.classList.add("is-loading");
 
             // Appel de l'API pour inviter un utilisateur à son évènement
             api.post("/events/" + this.event.event.id + "/participants", {
@@ -99,11 +99,10 @@ export default {
                     "Authorization": "Bearer " + jwt_token
                 }
             }).then(response => {
-                console.log(response);
                 alert("L'utilisateur " + this.mail + "a été invité à votre évènement " + this.event.event.title);
                 this.show = false;
             }).catch(error => {
-                alert(error.response.data.message)
+                console.log(error.response.data.message)
             })
         }
     }
