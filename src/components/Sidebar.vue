@@ -1,9 +1,7 @@
 <template>
     <div class="sidebar">
         <nav class="navbar" role="navigation" aria-label="dropdown navigation">
-            <a>
-                <router-link to="/"><h2 class="title is-2">Reunionou</h2></router-link>
-            </a>
+            <img src="../assets/logo.png" alt="logo-app" class="logo">
 
             <!-- Liens qui redirige sur le profil et les évènements -->
             <div class="links">
@@ -74,10 +72,15 @@ export default {
 
         .navbar{
             height: 100%;
-            display: flex; flex-direction: column; justify-content: space-between;
+            display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 1em;
             position: fixed;
             background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(76,45,253,1) 100%);
             overflow-x: hidden;
+
+            .logo {
+                width: 80%; height: 20%;
+                
+            }
             .links{ 
                 margin-top: -15em;
             }
@@ -95,6 +98,7 @@ export default {
             }
             .navbar-brand:hover {
                 background-color: rgba(34,193,195,0.8);
+                width: calc(100% + 1em);
             }
         }
     }
