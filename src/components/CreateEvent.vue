@@ -43,7 +43,6 @@ export default {
     mounted() {
         if(this.$store.state.jwtToken) {
             this.hideCreateButton = false;
-            console.log('test')
         }
     },
     methods: {

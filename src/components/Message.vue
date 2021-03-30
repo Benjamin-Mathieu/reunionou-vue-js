@@ -45,8 +45,9 @@ export default {
                         }
                 }).then(res => {
                     alert('Message supprimé');
+                    this.$bus.$emit("getEventMessage");
                 }).catch(error => {
-                    alert(error.res.data.message)
+                    alert(error.res.data.error)
                 });
             }
             
@@ -57,6 +58,6 @@ export default {
 
 <style lang="scss" scoped>
     .message{
-        width: 50%; margin: auto;
+        width: 80%; margin: auto;
     }
 </style>

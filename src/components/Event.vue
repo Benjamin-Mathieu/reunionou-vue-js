@@ -47,7 +47,7 @@ export default {
     mounted() {
         console.log(this.event);
         // Formatage de la date pour l'affichage de la date de création de l'évènement
-        let d = new Date(this.event.event.created_at);
+        let d = new Date(this.event.event.date);
         let options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
         this.dateEvent = d.toLocaleDateString('fr-FR', options);
 

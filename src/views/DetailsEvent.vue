@@ -6,10 +6,10 @@
                 <div class="media-content">
                     <div class="content">
                         <p>
-                            <strong>{{title}}</strong> <small>{{creator}}</small> 
+                            <strong>{{title}}</strong> <small>par <b>{{creator}}</b> le {{date}}</small> 
                             <br>
-                            <small>{{adress}}</small>
-                            <br>
+                            <small>Adresse: {{adress}}</small>
+                            <br><br>
                             Description: {{description}}
                             <br>
                             Participe: {{participants}}
@@ -21,14 +21,18 @@
                     </div>
                     <nav class="level is-mobile">
                         <div class="level-left">
-                            <button @click="participateEvent" class="button is-success level-item" v-bind:class="{ hide: hideParticipateButtons }" ref="participate">
+                            <button @click="participateEvent(true)" class="button is-small is-success level-item" v-bind:class="{ hide: hideParticipateButtons }" ref="participate">
                                 <span>Je participe</span>
                             </button>
-                             <button class="button is-danger" :class="{ hide: hideParticipateButtons }" ref="notparticipate">
+                             <button @click="participateEvent(false)" class="button is-small is-danger" :class="{ hide: hideParticipateButtons }" ref="notparticipate">
                                 <span>Je ne participe pas</span>
                             </button>
-                            <button @click="deleteEvent" class="button is-danger" v-bind:class="{ hide: hideDeleteButton }">
-                                <span>Supprimer l'event</span>
+                            <UpdateEvent  v-bind:class="{ hide: hideCreatorButtons }" />
+                            <button @click="deleteEvent" class="button is-small is-danger is-outlined" v-bind:class="{ hide: hideCreatorButtons }">
+                                <span>Supprimer</span>
+                                <span class="icon is-small">
+                                     <img src="../assets/clear-black-24dp.svg" alt="delete-icon">
+                                </span>
                             </button>
                         </div>
                     </nav>
@@ -36,23 +40,24 @@
             </article>
         </div>
         
-        <UpdateEvent/>
-        
-        <div v-if="$store.state.messages.length <= 0">
-            <article class="message is-danger">
-                <div class="message-body">
-                    <p>Aucun message de poster pour le moment...</p>
-                </div>
-            </article>
-        </div>
-        <div v-else v-for="message in $store.state.messages" :key="message.id">
-            <Message :message="message"/>
-        </div>
+        <!-- Affichage des messages -->
+        <section class="messages">
+            <div v-if="$store.state.messages.length <= 0">
+                <article class="message is-danger">
+                    <div class="message-body">
+                        <p>Aucun message de poster pour le moment...</p>
+                    </div>
+                </article>
+            </div>
+            <div v-else v-for="message in $store.state.messages" :key="message.id">
+                <Message :message="message"/>
+            </div>
 
-        <form @submit.prevent="sendMessage">
-            <input class="input" v-model="message" required type="text" placeholder="Tapez votre message">
-            <button class="button is-info">Envoyer</button>
-        </form>
+            <form class="form-msg" @submit.prevent="sendMessage">
+                <input class="input" v-model="message" required type="text" placeholder="Tapez votre message">
+                <button class="button is-info" ref="sendButton">Envoyer</button>
+            </form>
+        </section>
     </section>
 </template>
 
@@ -76,11 +81,11 @@ export default {
             adress: '',
             creator: '',
             date: '',
-            participants: '',
-            notparticipate: '',
-            pending: '',
+            participants: [],
+            notparticipate: [],
+            pending: [],
             hideParticipateButtons: false,
-            hideDeleteButton: true,
+            hideCreatorButtons: true,
             hideMap: false,
             message: ''
         }
@@ -91,7 +96,7 @@ export default {
         this.$bus.$on('getEvent', this.getEvent);
         this.getEventMessage();
         this.$bus.$on('getEventMessage', this.getEventMessage);
-
+        
         console.log(this.$store.state.messages);
     },
     methods: {
@@ -107,6 +112,8 @@ export default {
             });
         },
         sendMessage() {
+            this.$refs.sendButton.classList.add("is-loading");
+
             api.post("/events/" + this.$route.params.id + "/messages", {
                 "text" : this.message
             }, 
@@ -118,6 +125,7 @@ export default {
                 this.getEventMessage();
                 this.message = "";
                 alert('Message envoyé');
+                this.$refs.sendButton.classList.remove("is-loading");
             }).catch(error => {
                 alert(error.res.data.message)
             });
@@ -143,85 +151,95 @@ export default {
                 // Check si c'est le créateur de l'évènement et enlève les boutons de participation de l'affichage et affiche le bouton pour supprimé l'event
                 if(response.data.event.user_id == decoded.user.id) {
                     this.hideParticipateButtons = true
-                    this.hideDeleteButton = false
+                    this.hideCreatorButtons = false
                 }
 
-                // Parcours les participants de l'évènement et les ajoute à la data participants selon leur réponses à l'invitation
+                // Parcours les participants de l'évènement pour l'affichage des participants, non participants, en attente
                 response.data.event.participants.forEach(participant => {
-                    switch(participant.pivot.present) {
-                        case null:
-                            this.pending += " " + participant.firstname;
-                            break;
-                        case true:
-                            this.participants += " " + participant.firstname;
-                            break;
-                        case false:
-                            this.notparticipate += " " + participant.firstname;
-                            break;
-                        default:
-                            console.log("Aucune personne a répondu à l'évènement pour le moment")
+                    if(participant.pivot.present == true) {
+                        this.participants.push(participant.firstname); // push chaque participant dans l'array des participants
+
+                        // Vérification si l'array participants contient des prénoms déjà présent dans l'array pending, si oui le retire de l'array des personnes en attente de réponse
+                        this.participants.forEach(participant => {
+                            if(this.pending.includes(participant)) {
+                                const index = this.pending.indexOf(participant);
+                                if(index > -1) {
+                                    this.pending.splice(index, 1);
+                                }
+                            }
+                        });
                     }
-                    // if(participant.pivot.present !== null) {
-                    //     this.participants += " " + participant.firstname
-                    // }
+                    if(participant.pivot.present == false) {
+                        this.notparticipate.push(participant.firstname); // push chaque participant dans l'array des participants
+
+                        // Vérification si l'array participants contient des prénoms déjà présent dans l'array pending, si oui le retire de l'array des personnes en attente de réponse
+                        this.notparticipate.forEach(participant => {
+                            if(this.pending.includes(participant)) {
+                                const index = this.pending.indexOf(participant);
+                                if(index > -1) {
+                                    this.pending.splice(index, 1);
+                                }
+                            }
+                            if(this.participants.includes(participant)) {
+                                const index = this.participants.indexOf(participant);
+                                if(index > -1) {
+                                    this.participants.splice(index, 1);
+                                }
+                            }
+                        });
+                    } 
+                    if(participant.pivot.present == null) {
+                        this.pending.push(participant.firstname);
+                        console.log(this.pending);
+                    }
                 });
 
-                if(this.participants === "" || this.notparticipate === "") {
-                    this.participants = "/";
-                    this.notparticipate = "/";
-                }
+                // Transformation des arrays pour l'affichage
+                this.participants = this.participants.toString();
+                this.notparticipate = this.notparticipate.toString();
+                this.pending = this.pending.toString();
 
                 // Appel de l'api data-gouv pour récupérer les coordonnées GPS à l'aide de l'adresse de l'évènement
                 api_adress.get("/search/?q=" + this.adress.replaceAll(" ", "+")).then(res => {
-                    if(res.data.features.length > 1 || res.data.features.length == 0) {
-                        alert("L'adresse saisi est incorrect, veuillez la modifier pour l'afficher correctement sur la map");
-                        this.hideMap = true;
-                    }
-                    else {
-                        // Création de la map avec Leaflet
-                        let latitude = res.data.features[0].geometry.coordinates[1];
-                        let longitude = res.data.features[0].geometry.coordinates[0];
-                        let map = L.map("map").setView([latitude, longitude], 15);
-                    
-                        let openStreetMapLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                            attribution: '© OpenStreetMap contributors',
-                            maxZoom: 100,
-                            tileSize: 512,
-                            zoomOffset: -1
-                            });
-
-                        let DefaultIcon = L.icon({
-                            iconUrl: icon,
-                            iconSize:     [50, 95], // size of the icon
-                            iconAnchor: [25,95]
+                    // Création de la map avec Leaflet
+                    let latitude = res.data.features[0].geometry.coordinates[1];
+                    let longitude = res.data.features[0].geometry.coordinates[0];
+                    let map = L.map("map").setView([latitude, longitude], 15);
+                
+                    let openStreetMapLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors',
+                        maxZoom: 100,
+                        tileSize: 512,
+                        zoomOffset: -1
                         });
-                        L.Marker.prototype.options.icon = DefaultIcon;
 
-                        let marker = L.marker([latitude, longitude]).addTo(map);
-                        // marker.bindPopup("<b>Lieu de l'évènement</b>").openPopup();
-                        map.addLayer(openStreetMapLayer);
-                    }
+                    let DefaultIcon = L.icon({
+                        iconUrl: icon,
+                        iconSize:     [50, 95], // size of the icon
+                        iconAnchor: [25,95]
+                    });
+                    L.Marker.prototype.options.icon = DefaultIcon;
+
+                    L.marker([latitude, longitude]).addTo(map);
+                    map.addLayer(openStreetMapLayer);
                 })
             }).catch(error => {
                 alert(error.response.data.message)
             })
         },
 
-        participateEvent() {
-            let jwt_token = this.$store.state.jwtToken;
-            let decoded = jwt_decode(jwt_token);
-
+        participateEvent(response) {
             // Appel de l'API pour donné sa réponse à l'invitation d'un évènement, si response est à: true = participe, null = en attente, false = ne participe pas
             api.put("/events/" + this.$route.params.id + "/response", 
             {
-                "response": true
+                "response": response
             },
             {
                 headers: {
                     "Authorization": "Bearer " + this.$store.state.jwtToken
                 }
             }).then(response => {
-                alert('Vous participez !');
+                alert('Votre choix est mis à jour');
                 console.log(response);
             }).catch(error => {
                 alert(error.response.data.message);
@@ -255,8 +273,20 @@ export default {
             height: 400px; width: 80%;
             margin: auto;
         }
-        .hide {
-            display: none
+        .box {
+            width: 80%;
+            margin: auto;
+            position: relative;
+        }
+        .messages {
+            margin: 4em 0;
+
+            .form-msg {
+                width: 80%; margin: auto; text-align: center;
+            }
+        }
+        nav{
+            position: absolute; top: 0; right: 0;
         }
     }
     
