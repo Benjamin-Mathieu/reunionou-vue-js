@@ -9,12 +9,20 @@
                     <!-- Si le bouton Inviter est cliqué alors le formulaire pour rentré le mail s'affiche -->
                     <div v-if="show" id="invite-event">
                         <section>
-                            <h3>Invitations</h3>
                             <form @submit.prevent="inviteEvent">
-                                    <div><input v-model="mail" required type="mail" placeholder="Rentrer l'adresse mail de la personne à inviter..."></div>
-                                    <button class="button is-link">Inviter</button>
-                                    <button type="button" @click="maskForm" class="button is-warning button-clear">Annuler</button>
+                                    <input class="input" v-model="mail" required type="email" placeholder="Rentrer l'adresse mail de la personne à inviter...">
+                                    <div class="buttons">
+                                        <button class="button is-link">Inviter</button>
+                                        <button type="button" @click="maskForm" class="button is-warning button-clear">Annuler</button>
+                                    </div>
                             </form>
+                            <p>Ou partager le lien</p>
+                            <button @click="copyUrl" class="button is-small is-link">
+                                <span>Lien à partager</span>
+                                <span class="icon is-small">
+                                     <img src="../assets/content_copy-24px.svg" alt="copy-icon">
+                                </span>
+                            </button>
                         </section>
                     </div>
                 </div>
@@ -41,11 +49,14 @@ export default {
             show: false,
             close: false,
             mail: '',
-            myEvents: false
+            myEvents: false,
+            urlEvent: ''
         }
     },
     mounted() {
         console.log(this.event);
+
+
         // Formatage de la date pour l'affichage de la date de création de l'évènement
         let d = new Date(this.event.event.date);
         let options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
@@ -61,6 +72,15 @@ export default {
         }
     },
     methods: {
+        copyUrl() {
+            this.urlEvent = window.location.href + "/" + this.event.event.id + "?token=" + this.event.event.token;
+            
+            navigator.clipboard.writeText(this.urlEvent).then(function() {
+               alert("Le lien est copié");
+            }, function(err) {
+                console.error('Async: Could not copy text: ', err);
+            });
+        },
         showForm() {
             this.show = true;
         },
@@ -131,44 +151,27 @@ export default {
         background: whitesmoke;
         padding: 1em;
         border-radius: 1em;
+        text-align: center;
 
-        h3 {
-            color:#363636;
-        }
-
-        .close {
-            position: absolute;
-            top: -1em;
-            right: -1em;
-            width: 3em;
-            height: 3em;
-            line-height: 3em;
-            margin: 0;
-            padding: 0;
-            border-radius: 50%;
-        }
-        .close:hover {
-            cursor: pointer;
-        }
+        p{ color:black}
 
         form {
         border: none;
-        text-align: center;
+            div {
+                margin: .5em;
 
-        div {
-            margin: .5em;
-
-            input {
-                padding: 0.3em;
-                margin: 0.3em;
-                border-top: none; border-left: none; border-right: none;
-                border-bottom: 1px solid #2750B8;
-                border-radius: .3em;
-                width: 100%;
+                input {
+                    padding: 0.3em;
+                    margin: 0.3em;
+                    border-top: none; border-left: none; border-right: none;
+                    border-bottom: 1px solid #2750B8;
+                    border-radius: .3em;
+                    width: 100%;
+                }
             }
         }
-    }}
     }
+}
 
     
 </style>
