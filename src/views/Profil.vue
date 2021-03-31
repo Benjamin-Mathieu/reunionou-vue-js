@@ -15,7 +15,7 @@
 
                 <!-- Boutons pour gérer son profil -->
                 <router-link to="/newMDP"><button class="button is-info">Modifier le mot de passe</button></router-link>
-                <button class="button">Supprimer le profil</button>
+                <button class="button is-danger">Supprimer le profil</button>
             </div>
         </div>
 </template>

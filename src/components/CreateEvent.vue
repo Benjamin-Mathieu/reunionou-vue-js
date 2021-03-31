@@ -17,7 +17,7 @@
                         <input class="checkbox" v-model="checkbox_public" type="checkbox" id="public">
                         <div>
                             <button class="button is-link" ref="createEvent">Créer un évènement</button>
-                            <button type="button" @click="maskForm" class="button is-light">Annuler</button>
+                            <button type="button" @click="maskForm" class="button is-warning">Annuler</button>
                         </div>
                 </form>
             </section>
