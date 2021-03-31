@@ -2,16 +2,24 @@
     <article class="message is-link">
 
         <!-- Entête du message avec les boutons pour éditer et supprimer -->
-        <div v-bind:class="{ myMsg: myMsg }" class="message-header">
-            <p>{{message.user.firstname}}</p>
-            <div class="level-item" v-bind:class="{ hide: hideButtons }">
-                <button class="button is-small level-item is-link" @click="showEdit">
-                    <span>Editer</span>
-                    <span class="icon is-small">
-                            <img src="../assets/edit-white.svg" alt="edit-icon">
-                    </span>
-                </button>
-                <button @click="deleteMessage" class="delete" aria-label="delete"></button>
+        <div v-if="userId == message.message.user_id">
+            <div class="message-header myMsg">
+                <p>{{message.user.firstname}}</p>
+                <div class="level-item">
+                    <button class="button is-small level-item is-link" @click="showEdit">
+                        <span>Editer</span>
+                        <span class="icon is-small">
+                                <img src="../assets/edit-white.svg" alt="edit-icon">
+                        </span>
+                    </button>
+                    <button @click="deleteMessage" class="delete" aria-label="delete"></button>
+                </div>
+            </div>
+        </div>
+        
+        <div v-else>
+            <div class="message-header">
+                <p>{{message.user.firstname}}</p>
             </div>
         </div>
 
@@ -48,7 +56,8 @@ export default {
             editMsg: '',
             hide: true,
             hideButtons: true,
-            myMsg: false
+            myMsg: false,
+            userId: ''
         }
     },
     mounted() {
@@ -62,6 +71,7 @@ export default {
 
         // Le bouton pour supprimer un message s'affiche seulement si user_id du message correspond bien à l'id de l'utilisateur connecté 
         let decoded = jwt_decode(this.$store.state.jwtToken);
+        this.userId = decoded.user.id;
 
         if(this.message.message.user_id == decoded.user.id ) {
             this.hideButtons = false;
