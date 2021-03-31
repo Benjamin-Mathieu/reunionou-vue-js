@@ -31,7 +31,7 @@
                     <span>Connexion</span>
                 </router-link>
                 </button>
-                <button v-else @click="disconnectUser" :class="{ hide: hide }" class="button is-danger" id="disconnectButton">
+                <button v-else @click="disconnectUser" :class="{ hide: hide }" class="button is-danger" id="disconnectButton" ref="disconnectButton">
                     <span>Se déconnecter</span>
                 </button>
             </div>
@@ -53,11 +53,10 @@ export default {
     },
     methods: {
         disconnectUser() {
-            if(confirm("Se déconnecter ?")) {
-                this.$store.state.jwtToken = false;
-                this.$store.commit("setToken", this.$store.state.jwtToken);
-                this.$router.push("/");
-            } 
+            this.$refs.disconnectButton.classList.add("is-loading");
+            this.$store.state.jwtToken = false;
+            this.$store.commit("setToken", this.$store.state.jwtToken);
+            this.$router.push("/");
         }
     }
 }

@@ -48,7 +48,7 @@
         
         <!-- Affichage des messages -->
         <section class="messages">
-            <div v-if="$store.state.messages.length <= 0">
+            <div v-if="$store.state.messages.length == 0">
                 <article class="message is-danger">
                     <div class="message-body">
                         <p>Aucun message de poster pour le moment...</p>
@@ -255,6 +255,8 @@ export default {
                     "Authorization": "Bearer " + this.$store.state.jwtToken
                 }
             }).then(response => {
+                this.$refs.participate.classList.remove("is-loading");
+                this.$refs.notparticipate.classList.remove("is-loading");
                 console.log(response);
             }).catch(error => {
                 console.error(error.response.data.message);
@@ -298,7 +300,12 @@ export default {
             margin: 4em 0;
 
             .form-msg {
-                width: 80%; margin: auto; text-align: center;
+                width: 80%; margin: auto;
+                position: relative;
+
+                button {
+                    position: absolute; top: 0; right: 0;
+                }
             }
         }
         nav{
