@@ -89,7 +89,7 @@ export default {
                     "Authorization": "Bearer " + jwt_token
                 }
             }).then(response => {
-                this.$bus.$emit("getEvents");
+                this.$bus.$emit("getEvent");
                 this.show = false;
                 console.log(response.data)
             }).catch(error => {

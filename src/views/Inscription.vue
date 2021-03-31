@@ -99,7 +99,7 @@ export default {
                     console.log(response.data);
                     this.$router.push("/");
                 }).catch(error => {
-                    alert(error.response.data.message);
+                    console.error(error.response.data.message);
                 })
             }
         }

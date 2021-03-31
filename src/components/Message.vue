@@ -44,10 +44,9 @@ export default {
                             "Authorization": "Bearer " + this.$store.state.jwtToken
                         }
                 }).then(res => {
-                    alert('Message supprimé');
                     this.$bus.$emit("getEventMessage");
                 }).catch(error => {
-                    alert(error.res.data.error)
+                    console.log(error.res.data.error)
                 });
             }
             

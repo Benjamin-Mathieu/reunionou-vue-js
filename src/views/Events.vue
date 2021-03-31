@@ -1,8 +1,8 @@
 <template>
     <div>
         <!-- Affichage des évènements publiques -->
-        <h3 class="title is-3">Publiques</h3>
         <section class="public-events card">
+            <h3 class="title is-3">Publiques</h3>
             <div class="card-content columns is-mobile is-multiline is-centered">
                 <div v-for="event in $store.state.events" :key="event.id">
                     <Event :event="event"/>  
@@ -13,9 +13,10 @@
         <!-- Affichage des évènements crée en privé ou en attente -->
         <div v-if="this.$store.state.jwtToken == false"></div>
         <div v-else>
-            <h3 class="title is-3">Privés</h3>
             <section class="public-events card">
-                <div class="card-content columns is-mobile is-multiline is-centered">
+                <h3 class="title is-3">Privés</h3>
+                <div v-if="$store.state.privateEvents.length == 0"><p>Aucun évènement privé à afficher</p></div>
+                <div v-else class="card-content columns is-mobile is-multiline is-centered">
                     <div v-for="event in $store.state.privateEvents" :key="event.id">
                         <Event :event="event"/>  
                     </div>
@@ -55,7 +56,7 @@ export default {
         api.get("/events").then(response => {
                 this.$store.commit("setEvents", response.data.events);
             }).catch(error => {
-                alert(error.response.data.message)
+                console.error(error.response.data.message)
             })
       },
       getPrivateEvents() {
@@ -67,7 +68,7 @@ export default {
         .then(response => {
                 this.$store.commit("setPrivateEvents", response.data.events);
             }).catch(error => {
-               alert(error.response.data.message);
+               console.error(error.response.data.message);
             })
       },
     }
@@ -78,6 +79,6 @@ export default {
     .public-events{
         background-color: white;
         padding: 1em;
-        margin: 2em;
+        margin: 0 2em 2em 2em;
     }
 </style>
