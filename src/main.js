@@ -7,7 +7,7 @@ require('@/assets/main.scss');
 
 // Connexion à l'api
 window.api = axios.create({
-  baseURL: "http://docketu.iutnc.univ-lorraine.local:14000",
+  baseURL: "http://docketu.iutnc.univ-lorraine.fr",
   // withCredentials: true
 });
 window.api_adress = axios.create({
