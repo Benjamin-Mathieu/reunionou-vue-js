@@ -89,7 +89,8 @@ export default {
                     "Authorization": "Bearer " + jwt_token
                 }
             }).then(response => {
-                this.$bus.$emit("getEvent");
+                this.$bus.$emit("getEvents");
+                this.$bus.$emit("getPrivateEvents");
                 this.show = false;
                 console.log(response.data)
             }).catch(error => {
@@ -108,6 +109,7 @@ export default {
 
 <style lang="scss" scoped>
     #create-event {
+        z-index: 1000;
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(0,0,0,0.5);
