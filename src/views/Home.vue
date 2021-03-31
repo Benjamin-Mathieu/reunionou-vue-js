@@ -6,32 +6,28 @@
 
     <!-- Formulaire de connexion (mail, mdp) -->
     <form class="form-connexion" v-on:submit.prevent="connectAccount">
-      <div class="field">
-        <p class="control has-icons-left has-icons-right">
-          E-mail
-          <input class="input is-focused" type="email" placeholder="Email" v-model="email">
-          <span class="icon is-small is-left">
-              <i class="fas fa-envelope"></i>
-          </span>
-          <span class="icon is-small is-right">
-            <i class="fas fa-check"></i>
-          </span>
-        </p>
-      </div>
 
       <div class="field">
-        <p class="control has-icons-left has-icons-right">
-          Mot de passe
-          <input class="input" type="password" placeholder="Password" v-model="password">
+        <div class="control has-icons-left">
+          <input class="input is-large is-focused" type="email" placeholder="Email" v-model="email">
           <span class="icon is-small is-left">
-            <i class="fas fa-lock"></i>
+            <img src="../assets/mail_outline-black-24dp.svg" alt="mail-icon">
           </span>
-        </p>
+        </div>
+      </div>
+      
+      <div class="field">
+         <div class="control has-icons-left has-icons-right">
+            <input class="input is-large" type="password" placeholder="Mot de passe" v-model="password" ref="inputPass">
+            <span class="icon is-small is-left">
+              <img src="../assets/password-black-24dp.svg" alt="pass-icon">
+            </span>
+        </div>
       </div>
 
       <div class="field">
         <p class="control">
-          <button class="button is-success">Connexion</button>
+          <button class="button is-success" ref="connectButton">Connexion</button>
         </p>
       </div>
 
@@ -61,13 +57,14 @@ export default {
       // Création du token avec le mail et le password pour l'envoyé à l'API
       let token = Buffer.from(this.email+':'+this.password+'', 'utf8').toString('base64');
 
+      this.$refs.connectButton.classList.add("is-loading");
+
       // Appel à l'API pour vérifié la connexion de l'utilisateur
       api.post("/signIn", {}, {
               headers: {
                 'Authorization' : 'Basic ' + token,
               }
             }).then(response => {
-                alert("Vous êtes bien connecté")
                 let jwt_token = response.data;
                 let decoded = jwt_decode(jwt_token);
                 console.log(decoded);

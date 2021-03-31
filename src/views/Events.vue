@@ -10,14 +10,17 @@
         </section>
 
         <!-- Affichage des évènements crée en privé ou en attente -->
-        <h3 class="title is-3">Privés</h3>
-        <section class="public-events card">
-            <div class="card-content columns is-mobile is-multiline is-centered">
-                <div v-for="event in $store.state.privateEvents" :key="event.id">
-                    <Event :event="event"/>  
+        <div v-if="this.$store.state.jwtToken == false"></div>
+        <div v-else>
+            <h3 class="title is-3">Privés</h3>
+            <section class="public-events card">
+                <div class="card-content columns is-mobile is-multiline is-centered">
+                    <div v-for="event in $store.state.privateEvents" :key="event.id">
+                        <Event :event="event"/>  
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
 
         <!-- Affichage du modal pour crée un event -->
         <CreateEvent/>
@@ -39,10 +42,10 @@ export default {
         this.getEvents();
         this.$bus.$on('getEvents', this.getEvents);
 
-        this.getPrivateEvents();
-        this.$bus.$on('getPrivateEvents', this.getPrivateEvents);
-
-        console.log(this.$store.state.privateEvents);
+        if(this.$store.state.jwtToken) {
+            this.getPrivateEvents();
+            this.$bus.$on('getPrivateEvents', this.getPrivateEvents);
+        }
     },
     methods: {
         
@@ -63,7 +66,7 @@ export default {
         .then(response => {
                 this.$store.commit("setPrivateEvents", response.data.events);
             }).catch(error => {
-                alert(error.response.data.message)
+               alert(error.response.data.message);
             })
       },
     }
