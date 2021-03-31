@@ -23,9 +23,15 @@
                         <div class="level-left">
                             <button @click="participateEvent(true)" class="button is-small is-success level-item" v-bind:class="{ hide: hideParticipateButtons }" ref="participate">
                                 <span>Je participe</span>
+                                <span class="icon is-small">
+                                     <img src="../assets/done-white-24dp.svg" alt="delete-icon">
+                                </span>
                             </button>
                              <button @click="participateEvent(false)" class="button is-small is-danger" :class="{ hide: hideParticipateButtons }" ref="notparticipate">
                                 <span>Je ne participe pas</span>
+                                <span class="icon is-small">
+                                     <img src="../assets/not_interested-white-24dp.svg" alt="delete-icon">
+                                </span>
                             </button>
                             <UpdateEvent  v-bind:class="{ hide: hideCreatorButtons }" />
                             <button @click="deleteEvent" class="button is-small is-danger is-outlined" v-bind:class="{ hide: hideCreatorButtons }" ref="deleteEventButton">
@@ -108,7 +114,7 @@ export default {
             }).then(res => {
                 this.$store.commit("setMessages", res.data.messages);
             }).catch(error => {
-                alert(error.res.data.message)
+                console.log(error.res.data.message)
             });
         },
         sendMessage() {
@@ -124,10 +130,9 @@ export default {
             }).then(res => {
                 this.getEventMessage();
                 this.message = "";
-                alert('Message envoyé');
                 this.$refs.sendButton.classList.remove("is-loading");
             }).catch(error => {
-                alert(error.res.data.message)
+                console.log(error.res.data.message)
             });
         },
         getEvent() {
@@ -228,7 +233,7 @@ export default {
                     map.addLayer(openStreetMapLayer);
                 })
             }).catch(error => {
-                alert(error.response.data.message)
+                console.error(error.response.data.message)
             })
         },
 
@@ -250,10 +255,9 @@ export default {
                     "Authorization": "Bearer " + this.$store.state.jwtToken
                 }
             }).then(response => {
-                alert('Votre choix est mis à jour');
                 console.log(response);
             }).catch(error => {
-                alert(error.response.data.message);
+                console.error(error.response.data.message);
             });
         },
 
@@ -267,10 +271,10 @@ export default {
                         "Authorization": "Bearer " + this.$store.state.jwtToken
                     }
                 }).then(response => {
-                    alert('Event deleted');
                     this.$router.push("/events");
+                    this.$bus.$emit("getEvent");
                 }).catch(error => {
-                    alert(error.response.data.message);
+                    console.error(error.response.data.message);
                 });
             }
         }

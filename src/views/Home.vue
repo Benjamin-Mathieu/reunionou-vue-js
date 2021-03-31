@@ -73,7 +73,7 @@ export default {
                 console.log(this.$store.state.jwtToken);
                 this.$router.push("/events")
             }).catch(error => {
-                alert(error.response.data.message)
+                console.error(error.response.data.message)
             })
     }
   }
