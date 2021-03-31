@@ -24,7 +24,7 @@
                             <button @click="participateEvent(true)" class="button is-small is-success level-item" v-bind:class="{ hide: hideParticipateButtons }" ref="participate">
                                 <span>Je participe</span>
                                 <span class="icon is-small">
-                                     <img src="../assets/done-white-24dp.svg" alt="delete-icon">
+                                     <img src="../assets/done-white-24dp.svg" alt="valid-icon">
                                 </span>
                             </button>
                              <button @click="participateEvent(false)" class="button is-small is-danger" :class="{ hide: hideParticipateButtons }" ref="notparticipate">
