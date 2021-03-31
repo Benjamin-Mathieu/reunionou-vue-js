@@ -11,7 +11,9 @@
                         <input class="input" v-model="title" required type="text" placeholder="Titre" minlength="4" maxlength="80">
                         <input class="input" v-model="description" required type="text" placeholder="Description" minlength="0" maxlength="200">
                         <input class="input" v-model="adress" required type="text" placeholder="Adresse" ref="adress">
-                        <input class="input" v-model="date" required type="date">
+                        <p class="help is-danger hide" ref="invalidAdressTxt">L'adresse saisi est incorrect</p>
+                        <input class="input" v-model="date" required type="date" ref="inputDate">
+                        <p class="help is-danger hide" ref="invalidDateTxt">La date sélectionné doit être supérieur à la date d'aujourd'hui</p>
                         <input class="input" v-model="time" required type="time">
                         <label for="public">Publique</label>
                         <input class="checkbox" v-model="checkbox_public" type="checkbox" id="public">
@@ -51,20 +53,28 @@ export default {
         },
         maskForm() {
             this.show = false;
+            this.title = '';
+            this.description = '';
+            this.adress = '';
+            this.date = '';
+            this.time = '';
+            this.checkbox_public = false;
         },
         createEvent() {
             let jwt_token = this.$store.state.jwtToken;
-            this.$refs.createEvent.classList.add("is-loading");
 
             // Vérification de la date choisi pour l'évènement
             let selectedDate = new Date(this.date);
             let now = new Date();
                 if (selectedDate < now) {
-                    alert("La date choisi doit être supérieur à la date d'aujourd'hui !");
+                    this.$refs.inputDate.classList.add("is-danger");
+                    this.$refs.invalidDateTxt.classList.remove("hide");
+                    this.$refs.createEvent.classList.remove("is-loading");
                     return;
                 }
             
             let dateFormated = this.date + " " + this.time;
+            this.$refs.createEvent.classList.add("is-loading");
 
             // Appel de l'API pour crée l'évènement et récupère les données (title, description, date, adress) tapées par l'utilisateur
             api.post("/events", {
@@ -79,15 +89,17 @@ export default {
                     "Authorization": "Bearer " + jwt_token
                 }
             }).then(response => {
-                alert("Event created");
+                this.$bus.$emit("getEvents");
                 this.show = false;
                 console.log(response.data)
             }).catch(error => {
-                if(error.response.data.error == "No adress found") {
-                    alert("L'adresse saisi est incorrect ! Veuillez la saisir à nouveau");
+                this.$refs.createEvent.classList.remove("is-loading");
+                console.log(error.response.data.error);
+
+                if(error.response.data.error == "Adress need to be more precise or wrong adress" || error.response.data.error == "No adress found") {
+                    this.$refs.invalidAdressTxt.classList.remove("hide");
                     this.$refs.adress.classList.add("is-danger");
                 }
-                console.log(error.response.data.error);
             })
         }
     }
