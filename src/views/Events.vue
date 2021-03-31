@@ -3,6 +3,7 @@
         <!-- Affichage des évènements publiques -->
         <section class="public-events card">
             <h3 class="title is-3">Publiques</h3>
+            <div v-if="$store.state.events.length == 0"><p>Aucun évènement publique à afficher</p></div>
             <div class="card-content columns is-mobile is-multiline is-centered">
                 <div v-for="event in $store.state.events" :key="event.id">
                     <Event :event="event"/>  

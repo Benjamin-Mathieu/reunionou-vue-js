@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Loading v-if="$store.state.loading"/>
     <Sidebar/>
     <router-view class="main"/>
   </div>
@@ -7,10 +8,13 @@
 
 <script>
 import Sidebar from '@/components/Sidebar.vue';
+import Loading from '@/components/Loading.vue';
+
 
 export default {
     components: {
-        Sidebar
+        Sidebar,
+        Loading
     }
   }
 </script>

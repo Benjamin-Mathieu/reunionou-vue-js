@@ -76,7 +76,7 @@ export default {
             this.urlEvent = window.location.href + "/" + this.event.event.id + "?token=" + this.event.event.token;
             
             navigator.clipboard.writeText(this.urlEvent).then(function() {
-               alert("Le lien est copié");
+                console.log("Lien copié");
             }, function(err) {
                 console.error('Async: Could not copy text: ', err);
             });

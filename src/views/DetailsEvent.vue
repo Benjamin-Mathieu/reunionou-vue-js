@@ -24,7 +24,7 @@
                             <button @click="participateEvent(true)" class="button is-small is-success level-item" v-bind:class="{ hide: hideParticipateButtons }" ref="participate">
                                 <span>Je participe</span>
                                 <span class="icon is-small">
-                                     <img src="../assets/done-white-24dp.svg" alt="delete-icon">
+                                     <img src="../assets/done-white-24dp.svg" alt="valid-icon">
                                 </span>
                             </button>
                              <button @click="participateEvent(false)" class="button is-small is-danger" :class="{ hide: hideParticipateButtons }" ref="notparticipate">
@@ -48,7 +48,7 @@
         
         <!-- Affichage des messages -->
         <section class="messages">
-            <div v-if="$store.state.messages.length <= 0">
+            <div v-if="$store.state.messages.length == 0">
                 <article class="message is-danger">
                     <div class="message-body">
                         <p>Aucun message de poster pour le moment...</p>
@@ -98,6 +98,7 @@ export default {
     },
     mounted() {
         // Récupération des informations de l'évènement et des messages
+
         this.getEvent();
         this.$bus.$on('getEvent', this.getEvent);
         this.getEventMessage();
@@ -105,8 +106,12 @@ export default {
         
         console.log(this.$store.state.messages);
     },
+    beforeDestroy() {
+        this.$store.state.messages = [];
+    },
     methods: {
         getEventMessage() {
+            this.$store.state.loading = true;
             api.get("/events/" + this.$route.params.id + "/messages", {
              headers: {
                     "Authorization": "Bearer " + this.$store.state.jwtToken
@@ -115,6 +120,8 @@ export default {
                 this.$store.commit("setMessages", res.data.messages);
             }).catch(error => {
                 console.log(error.res.data.message)
+            }).finally(() => {
+                this.$store.state.loading = false;
             });
         },
         sendMessage() {
@@ -234,7 +241,7 @@ export default {
                 })
             }).catch(error => {
                 console.error(error.response.data.message)
-            })
+            });
         },
 
         participateEvent(response) {
@@ -255,6 +262,8 @@ export default {
                     "Authorization": "Bearer " + this.$store.state.jwtToken
                 }
             }).then(response => {
+                this.$refs.participate.classList.remove("is-loading");
+                this.$refs.notparticipate.classList.remove("is-loading");
                 console.log(response);
             }).catch(error => {
                 console.error(error.response.data.message);
@@ -299,7 +308,12 @@ export default {
             margin: 4em 0;
 
             .form-msg {
-                width: 80%; margin: auto; text-align: center;
+                width: 80%; margin: auto;
+                position: relative;
+
+                button {
+                    position: absolute; top: 0; right: 0;
+                }
             }
         }
         nav{
