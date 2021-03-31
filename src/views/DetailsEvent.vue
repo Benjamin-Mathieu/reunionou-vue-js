@@ -98,6 +98,7 @@ export default {
     },
     mounted() {
         // Récupération des informations de l'évènement et des messages
+
         this.getEvent();
         this.$bus.$on('getEvent', this.getEvent);
         this.getEventMessage();
@@ -105,8 +106,12 @@ export default {
         
         console.log(this.$store.state.messages);
     },
+    beforeDestroy() {
+        this.$store.state.messages = [];
+    },
     methods: {
         getEventMessage() {
+            this.$store.state.loading = true;
             api.get("/events/" + this.$route.params.id + "/messages", {
              headers: {
                     "Authorization": "Bearer " + this.$store.state.jwtToken
@@ -115,6 +120,8 @@ export default {
                 this.$store.commit("setMessages", res.data.messages);
             }).catch(error => {
                 console.log(error.res.data.message)
+            }).finally(() => {
+                this.$store.state.loading = false;
             });
         },
         sendMessage() {
@@ -234,7 +241,7 @@ export default {
                 })
             }).catch(error => {
                 console.error(error.response.data.message)
-            })
+            });
         },
 
         participateEvent(response) {

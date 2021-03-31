@@ -14,7 +14,8 @@ export default new Vuex.Store({
     events: [],
     privateEvents: [],
     messages: [],
-    jwtToken: false
+    jwtToken: false,
+    loading: false
   },
   mutations: {
     setEvents(state,events)
