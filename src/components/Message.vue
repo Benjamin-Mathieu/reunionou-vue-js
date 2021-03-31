@@ -1,5 +1,7 @@
 <template>
     <article class="message is-link">
+
+        <!-- Entête du message avec les boutons pour éditer et supprimer -->
         <div v-bind:class="{ myMsg: myMsg }" class="message-header">
             <p>{{message.user.firstname}}</p>
             <div class="level-item" v-bind:class="{ hide: hideButtons }">
@@ -12,8 +14,12 @@
                 <button @click="deleteMessage" class="delete" aria-label="delete"></button>
             </div>
         </div>
+
+        <!-- Corps du message -->
         <div class="message-body">
             <p>{{message.message.text}}</p>
+
+            <!-- Formulaire pour éditer le message -->
             <form v-bind:class="{ hide: hide }" @submit.prevent="editMessage" class="form-edit" ref="formEdit">
                 <input class="input is-small" v-model="editMsg" :placeholder="message.message.text" required type="text">
                 <button class="button is-info is-small" ref="editMsgButton">
@@ -22,6 +28,8 @@
                     </span>
                 </button>
             </form>
+            
+            <!-- Affichage des dates d'envoi et de modification -->
             <p class="help" style="text-align: right">{{dateMsg}}</p>
             <p v-if="dateMsg != dateEditMsg" class="help" style="text-align: right">modifié le: ({{dateEditMsg}})</p>
         </div>
