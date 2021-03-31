@@ -1,6 +1,6 @@
 <template>
     <article class="message is-link">
-        <div class="message-header">
+        <div v-bind:class="{ myMsg: myMsg }" class="message-header">
             <p>{{message.user.firstname}}</p>
             <button @click="deleteMessage" class="delete" aria-label="delete" v-bind:class="{ hide: hideDeleteButton }"></button>
         </div>
@@ -19,7 +19,8 @@ export default {
     data() {
         return {
             dateMsg : '',
-            hideDeleteButton: false
+            hideDeleteButton: true,
+            myMsg: false
         }
     },
     mounted() {
@@ -31,8 +32,10 @@ export default {
         let decoded = jwt_decode(this.$store.state.jwtToken);
 
         // Le bouton pour supprimer un message s'affiche seulement si user_id du message correspond bien à l'id de l'utilisateur connecté 
-        if(this.message.message.user_id != decoded.user.id ) {
-            this.hideDeleteButton = true;
+        if(this.message.message.user_id == decoded.user.id ) {
+            this.hideDeleteButton = false;
+            this.myMsg = true;
+            console.log(this.myMsg)
         }
     },
     methods: {
@@ -58,5 +61,19 @@ export default {
 <style lang="scss" scoped>
     .message{
         width: 80%; margin: auto;
+
+        .message-body {
+            p {
+                color:#4a4a4a;
+            }
+        }
+        .message-header {
+            background-color: #4a4a4a;
+        }
+
+        .myMsg {
+            background-color: #3273dc;
+        }
     }
+    
 </style>
